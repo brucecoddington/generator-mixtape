@@ -18,6 +18,7 @@ require.config({
 
     // AngularJS libraries
     angular : '/base/client/assets/js/components/angular/angular',
+    ngStrap : '/base/client/assets/js/components/angular-strap/dist/angular-strap',
     ngResource : '/base/client/assets/js/components/angular-resource/angular-resource.min',
     ngMocks : '/base/client/assets/js/lib/angular-mocks-1.1.5',
     ngScenario : '/base/client/assets/js/components/angular-scenario/angular-scenario',
@@ -74,12 +75,18 @@ require.config({
       exports: 'angular'
     },
 
+    ngStrap : {
+        deps: ['bootstrap', 'angular', 'bsDatePicker', 'bsSelect', 'bsTimePicker'],
+        exports: 'angular'
+    },
+
     ngResource : {
         deps : ['angular']
     },
 
     ngMocks : {
-      deps: ['angular']
+      deps: ['angular'],
+      exports: 'angular.mock'
     },
 
     ngScenario : {
@@ -102,8 +109,15 @@ require.config({
         deps: ['bootstrap']
     }
   },
+
   // ask requirejs to load these files (all our tests)
   deps: tests,
+
   // start test run, once requirejs is done
-  callback: window.__karma__.start
+  callback: function () {
+    // set dependencies for all specs here. 
+    require(['ngStrap'], function () {
+      window.__karma__.start(); 
+    });
+  }
 });
