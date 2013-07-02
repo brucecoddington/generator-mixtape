@@ -7,18 +7,18 @@ define(function(require) {
 
     require('ngStrap');
 
-    var app, controller, scope;
+    var app, directive, scope;
 
-    describe('{{specName}}.controller', function () {
+    describe('<%= specName %>.directive', function () {
 
         beforeEach (function () {
             app = angular.module("app", []);
-            require('{{controllerUrl}}')();
+            require('<%= module %>')();
             angular.mock.module('app');
 
-            inject(function($rootScope, $controller){
+            inject(function($rootScope, $directive){
                 scope = $rootScope.$new();
-                controller = $controller('{{controllerName}}', {
+                directive = $directive('<%= name %>', {
                     $scope: scope
                 }); 
             });

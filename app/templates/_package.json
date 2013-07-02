@@ -1,5 +1,5 @@
 {
-  "name": "angular-locomotive-bootstrap",
+  "name": "<%= _.slugify(prototypeName) %>",
   "title": "Server: Locomotive, Client: AngularJS",
   "main": "./client/dist/release/app.js",
   "description": "Template for creating Locomotive applications with AngularJS",

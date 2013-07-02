@@ -1,10 +1,10 @@
 var locomotive = require('locomotive')
   , Controller = locomotive.Controller;
 
-var {{upperCaseName}}Controller= new Controller();
+var <%= name %>Controller= new Controller();
 
-{{upperCaseName}}Controller.index = function() {
+<%= name %>Controller.index = function() {
   this.render();
 }
 
-module.exports = CONTROLLER_NAME;
+module.exports = <%= name %>Controller;

@@ -9,16 +9,16 @@ define(function(require) {
 
     var app, controller, scope;
 
-    describe('{{specName}}.controller', function () {
+    describe('<%= specName %>.controller', function () {
 
         beforeEach (function () {
             app = angular.module("app", []);
-            require('{{controllerUrl}}')();
+            require('<%= module %>')();
             angular.mock.module('app');
 
             inject(function($rootScope, $controller){
                 scope = $rootScope.$new();
-                controller = $controller('{{controllerName}}', {
+                controller = $controller('<%= name %>', {
                     $scope: scope
                 }); 
             });

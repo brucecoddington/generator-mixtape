@@ -5,15 +5,15 @@ module.exports = (function () {
     _ = require('underscore');
 
   // schema definition
-  var {{lowerCaseName}}Schema = new Schema ({
+  var <%= name %>Schema = new Schema ({
     // Add model fields here
   });
 
   // Static functions
-  userSchema.statics.someMethod = function (email, cb) {
+  <%= name %>Schema.statics.someMethod = function (email, cb) {
     this.findOne({ email: email}, cb);
   };
 
-  return mongoose.model('{{upperCaseName}}', userSchema);
+  return mongoose.model('<%= name %>', userSchema);
 
 }());

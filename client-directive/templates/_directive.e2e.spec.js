@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('{{specName}}.controller', function () {
+    describe('<%= specName %>.directive', function () {
 
         beforeEach (function () {
             browser().navigateTo("/");
