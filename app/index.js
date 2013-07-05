@@ -83,8 +83,7 @@ MixtapeGenerator.prototype.configGen = function configGen() {
   this.template('config/_properties.js', 'config/properties.js');
   this.copy('config/routes.js', 'config/routes.js');
 
-  this.mkdir('config/bootstrap');
-  this.copy('config/bootstrap/socket.js', 'config/bootstrap/socket.js');
+  this.directory('config/bootstrap', 'config/bootstrap');
 
   this.mkdir('config/environments');
   this.template('config/environments/_all.js', 'config/environments/all.js');
@@ -93,20 +92,15 @@ MixtapeGenerator.prototype.configGen = function configGen() {
   this.template('config/environments/_production.js', 'config/environments/production.js');
   this.template('config/environments/_test.js', 'config/environments/test.js');
 
-  this.mkdir('config/initializers');
-  this.copy('config/initializers/00_mongo.js', 'config/initializers/00_mongo.js');
-  this.copy('config/initializers/01_session.js', 'config/initializers/01_session.js');  
-  
+  this.directory('config/initializers', 'config/intitializers');
+
   cb();
 };
 
 MixtapeGenerator.prototype.gruntTasks = function gruntTasks() {
   var cb = this.async();
   
-  this.mkdir('grunt_tasks');
-  this.copy('grunt_tasks/docco.js', 'grunt_tasks/docco.js');
-  this.copy('grunt_tasks/manifest.js', 'grunt_tasks/manifest.js');
-  this.copy('grunt_tasks/run-app.js', 'grunt_tasks/run-app.js');  
+  this.directory('grunt_tasks', 'grunt_tasks');  
   
   cb();
 };
@@ -114,8 +108,7 @@ MixtapeGenerator.prototype.gruntTasks = function gruntTasks() {
 MixtapeGenerator.prototype.serverSpecs = function serverSpecs() {
   var cb = this.async();
   
-  this.mkdir('specs');
-  this.copy('specs/sample.js', 'specs/sample.js');  
+  this.directory('specs', 'specs');  
   
   cb();
 };
@@ -152,16 +145,8 @@ MixtapeGenerator.prototype.assets = function assets() {
   this.mkdir('client/assets');
   this.mkdir('client/assets/css');
   this.mkdir('client/assets/font');
-  this.mkdir('client/assets/img');
-  this.copy('client/assets/img/bg.jpg', 'client/assets/img/bg.jpg');
-  this.copy('client/assets/img/fancybox_loading.gif', 'client/assets/img/fancybox_loading.gif');
-  this.copy('client/assets/img/glyphicons-halflings-white.png', 'client/assets/img/glyphicons-halflings-white.png');
-  this.copy('client/assets/img/glyphicons-halflings.png', 'client/assets/img/glyphicons-halflings.png');
-  this.copy('client/assets/img/glyphicons-white.png', 'client/assets/img/glyphicons-white.png');
-  this.copy('client/assets/img/glyphicons-white.svg', 'client/assets/img/glyphicons-white.svg');
-  this.copy('client/assets/img/glyphicons.png', 'client/assets/img/glyphicons.png');
-  this.copy('client/assets/img/glyphicons.svg', 'client/assets/img/glyphicons.svg');   
-  
+  this.directory('client/assets/img', 'client/assets/img');
+
   cb(); 
 };
 
@@ -186,28 +171,15 @@ MixtapeGenerator.prototype.clientLibs = function clientLibs() {
   var cb = this.async();
   
   // assets/js directories
-  this.mkdir('client/assets/js');
-  this.mkdir('client/assets/js/components');
-  this.mkdir('client/assets/js/lib');
-  this.copy('client/assets/js/lib/angular-mocks-1.1.5.js', 'client/assets/js/lib/angular-mocks-1.1.5.js');    
+  this.directory('client/assets/js', 'client/assets/js');   
   
   cb();
 };
 
 MixtapeGenerator.prototype.clientLess = function clientLess() {
   var cb = this.async();
-  
-  // assets less directory
-  this.mkdir('client/assets/less');
-  this.copy('client/assets/less/bootswatch.less', 'client/assets/less/bootswatch.less');
-  this.copy('client/assets/less/custom.less', 'client/assets/less/custom.less');
-  this.copy('client/assets/less/gradients.less', 'client/assets/less/gradients.less');
-  this.copy('client/assets/less/mixins.less', 'client/assets/less/mixins.less');
-  this.copy('client/assets/less/shadows.less', 'client/assets/less/shadows.less');
-  this.copy('client/assets/less/style.less', 'client/assets/less/style.less');
-  this.copy('client/assets/less/styleIE.less', 'client/assets/less/styleIE.less');
-  this.copy('client/assets/less/styleIE9.less', 'client/assets/less/styleIE9.less');
-  this.copy('client/assets/less/variables.less', 'client/assets/less/variables.less');  
+
+  this.directory('client/assets/less', 'client/assets/less');
   
   cb();
 };
@@ -220,13 +192,17 @@ MixtapeGenerator.prototype.clientSpecs = function clientSpecs() {
 
   this.mkdir('client/specs/e2e');
   this.mkdir('client/specs/e2e/app');
-  this.mkdir('client/specs/e2e/app/controllers');
-  this.copy('client/specs/e2e/app/controllers/nav.controller.e2e.spec.js', 'client/specs/e2e/app/controllers/nav.controller.e2e.spec.js');
+  this.directory('client/specs/e2e/app/controllers', 'client/specs/e2e/app/controllers');
+  this.mkdir('client/specs/e2e/app/directives');
+  this.mkdir('client/specs/e2e/app/filters');
+  this.mkdir('client/specs/e2e/app/services');
 
   this.mkdir('client/specs/unit');
   this.mkdir('client/specs/unit/app');
-  this.mkdir('client/specs/unit/controllers');
-  this.copy('client/specs/unit/app/controllers/nav.controller.spec.js', 'client/specs/unit/app/controllers/nav.controller.spec.js'); 
+  this.directory('client/specs/unit/app/controllers', 'client/specs/unit/app/controllers');
+  this.mkdir('client/specs/unit/app/directives');
+  this.mkdir('client/specs/unit/app/filters');
+  this.mkdir('client/specs/unit/app/services');
 
   cb(); 
 };
