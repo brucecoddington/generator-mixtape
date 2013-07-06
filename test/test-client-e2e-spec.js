@@ -16,15 +16,13 @@ describe('client controller generator', function () {
   });
 
   it('creates expected files with a path included in the name argument', function (done) {
-    this.clientController = helpers.createGenerator('mixtape:client-controller', [
-      '../../client-controller'
+    this.clientController = helpers.createGenerator('mixtape:client-e2e-spec', [
+      '../../client-e2e-spec'
     ], ['with/a/path/test']);
 
     var expected = [
       // add files you expect to exist here.
-      'client/app/controllers/with/a/path/test.controller.js',
-      'client/specs/e2e/app/controllers/with/a/path/test.e2e.spec.js',
-      'client/specs/unit/app/controllers/with/a/path/test.spec.js'
+      'client/specs/e2e/with/a/path/test.e2e.spec.js'
     ];
 
     this.clientController.options['skip-install'] = true;
@@ -35,15 +33,13 @@ describe('client controller generator', function () {
   });
 
   it('creates expected files without a path included in the name argument', function (done) {
-    this.clientController = helpers.createGenerator('mixtape:client-controller', [
-      '../../client-controller'
+    this.clientController = helpers.createGenerator('mixtape:client-e2e-spec', [
+      '../../client-e2e-spec'
     ], ['test']);
 
     var expected = [
-      // add files you expect to exist here.
-      'client/app/controllers/test.controller.js',
-      'client/specs/e2e/app/controllers/test.e2e.spec.js',
-      'client/specs/unit/app/controllers/test.spec.js'
+      // add files you expect to exist here.\
+      'client/specs/e2e/test.e2e.spec.js'
     ];
 
     this.clientController.options['skip-install'] = true;

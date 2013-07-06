@@ -5,9 +5,9 @@ define(function (require){
   var logger = require('logger');
 
   return function () {
-    logger.info("Registering <%= name %>");
+    logger.info("Registering <%= _.capitalize(name) %>Service");
 
-    require('angular').module('app').factory('<%= name %>', 
+    require('angular').module('app').factory('<%= _.capitalize(name) %>Service', 
       [
         '$DEPS',
         function ($DEPS) {
