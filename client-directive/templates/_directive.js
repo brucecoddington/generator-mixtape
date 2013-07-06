@@ -5,9 +5,9 @@ define(function (require){
   var logger = require('logger');
 
   return function () {
-    logger.info('Registering DIRECTIVE');
+    logger.info('Registering <%= _.capitalize(name) %>Directive');
 
-    require('angular').module('app').directive('DIRECTIVE', 
+    require('angular').module('app').directive('<%= _.capitalize(name) %>Directive', 
       [
         '$DEPS',
         function ($DEPS) {

@@ -14,13 +14,13 @@ var ClientControllerGenerator = module.exports = function ClientControllerGenera
   // By calling `NamedBase` here, we get the argument to the subgenerator call
   // as `this.name`.
   yeoman.generators.NamedBase.apply(this, arguments);
+
+  console.log('Creating the ' + this.name + ' controller and its specs...');
 };
 
 util.inherits(ClientControllerGenerator, yeoman.generators.NamedBase);
 
 ClientControllerGenerator.prototype.setVariables = function setVariables() {
-    // name is "foo/bar/truck"
-
     if (this._.include(this.name, '/')) {
         var lower = this.name.toLowerCase();
         var parsed = this._.words(lower, "/");
@@ -37,21 +37,28 @@ ClientControllerGenerator.prototype.directories = function directories() {
   this.mkdir(controllerDirs);
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
+
+  console.log('Created the needed directories.');
 }
 
 ClientControllerGenerator.prototype.module = function module() {
   var modulePath = this._.flatten(['controllers', this.path]).join('/');
 
   this.module = [addTrailingSlash(this, modulePath), this.name, '.controller'].join('');
+
+  console.log('RequireJS module name compiled.');
 }
 
 ClientControllerGenerator.prototype.files = function files() {
   var e2eSpecPathAndName = [addTrailingSlash(this, this.e2eDirs), this.name, '.e2e.spec.js'].join('');
   this.template('_controller.e2e.spec.js', e2eSpecPathAndName);
+  console.log('End to end specification created.');
 
   var unitSpecPathAndName = [addTrailingSlash(this, this.unitDirs), this.name, '.spec.js'].join('');
   this.template('_controller.spec.js', unitSpecPathAndName);
+  console.log('Unit spec created.');
 
   var controllerPathAndName = [addTrailingSlash(this, this.controllerDirs), this.name, '.controller.js'].join('');
   this.template('_controller.js', controllerPathAndName);
+  console.log('Controller created.');
 };
