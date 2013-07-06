@@ -9,7 +9,7 @@ define(function(require) {
 
     var app, controller, scope;
 
-    describe('<%= specName %>.controller', function () {
+    describe('<%= name %>.controller', function () {
 
         beforeEach (function () {
             app = angular.module("app", []);
@@ -18,7 +18,7 @@ define(function(require) {
 
             inject(function($rootScope, $controller){
                 scope = $rootScope.$new();
-                controller = $controller('<%= name %>', {
+                controller = $controller('<%= _.capitalize(name) %>Controller', {
                     $scope: scope
                 }); 
             });
