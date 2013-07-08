@@ -9,11 +9,13 @@ define(function(require) {
 
     var app, controller, scope;
 
-    describe('<%= specName %>.controller', function () {
+    describe('<%= name %>.controller', function () {
 
         beforeEach (function () {
             app = angular.module("app", []);
-            require('<%= module %>')();
+            
+            // require any modules you are testing here
+
             angular.mock.module('app');
 
             inject(function($rootScope, $controller){

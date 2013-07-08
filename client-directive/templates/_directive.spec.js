@@ -11,6 +11,21 @@ define(function(require) {
 
     describe('<%= name %>.directive', function () {
 
+          // load the templates
+        beforeEach(module('<%= template %>'));
+
+        beforeEach(inject(function($rootScope, $compile) {
+            // we might move this tpl into an html file as well...
+            elm = angular.element(
+                '<div>' +
+                'mock your dom here' +
+                '</div>');
+
+            scope = $rootScope;
+            $compile(elm)(scope);
+            scope.$digest();
+        }));
+
         beforeEach (function () {
             app = angular.module("app", []);
             require('<%= module %>')();

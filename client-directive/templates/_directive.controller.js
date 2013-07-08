@@ -11,12 +11,13 @@ define(function (require){
       [
         '$DEPS',
         function ($DEPS) {
-          var link = function (scope, element, attrs, controller) {
+          
+          var controller = function ($scope, $element) {
 
           };
 
           return {
-            link: link,
+            controller: controller,
             replace: true,
             require: '???',
             restrict: 'E',
