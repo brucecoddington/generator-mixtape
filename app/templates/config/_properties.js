@@ -3,13 +3,13 @@
 module.exports = function () {
 
   var properties = {
-    appName: "angular-locomotive-bootstrap",
+    appName: "<%= _.slugify(prototypeName) %>",
     logs : {
       folder : './logs',
       filename : 'output.log'
     },
     mongo: {
-      db : 'angular-locomotive-bootstrap',
+      db : '<%= _.slugify(prototypeName) %>',
       host : '127.0.0.1',
       port : 27017
     },

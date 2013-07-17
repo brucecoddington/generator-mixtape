@@ -52,9 +52,6 @@ MixtapeGenerator.prototype.app = function app() {
   this.template('app/views/application/_index.jade', 'app/views/application/index.jade');
   
   this.mkdir('app/views/templates');
-  this.template('app/views/templates/_footer.jade', 'app/views/templates/footer.jade');
-  this.template('app/views/templates/_header.jade', 'app/views/templates/header.jade');
-  this.template('app/views/templates/_underfooter.jade', 'app/views/templates/underfooter.jade');  
   
   cb();
 };
@@ -62,15 +59,17 @@ MixtapeGenerator.prototype.app = function app() {
 MixtapeGenerator.prototype.projectfiles = function projectfiles() {
   var cb = this.async();
   
-  this.copy('_package.json', 'package.json');
-  this.copy('_bower.json', 'bower.json');
-  this.copy('_bowerrc', '.bowerrc');
-  this.copy('_gitignore', '.gitignore');
-  this.copy('_Gruntfile.js', 'Gruntfile.js');
-  this.copy('_karma.unit.config.js', 'karma.unit.config.js');
-  this.copy('_karma.e2e.config.js', 'karma.e2e.config.js');
-  this.copy('_nodemonignore', '.nodemonignore');
-  this.copy('_readme.md', 'readme.md');
+  this.template('_package.json', 'package.json');
+  this.template('_bower.json', 'bower.json');
+  this.template('_bowerrc', '.bowerrc');
+  this.template('_gitignore', '.gitignore');
+  this.template('_Gruntfile.js', 'Gruntfile.js');
+  this.template('_karma.unit.config.js', 'karma.unit.config.js');
+  this.template('_karma.e2e.config.js', 'karma.e2e.config.js');
+  this.template('_karma.ci.unit.config.js', 'karma.ci.unit.config.js');
+  this.template('_karma.ci.e2e.config.js', 'karma.ci.e2e.config.js');
+  this.template('_nodemonignore', '.nodemonignore');
+  this.template('_readme.md', 'readme.md');
   this.copy('server.js', 'server.js');  
   
   cb();
@@ -90,7 +89,6 @@ MixtapeGenerator.prototype.configGen = function configGen() {
   this.template('config/environments/_debug.js', 'config/environments/debug.js');
   this.template('config/environments/_development.js', 'config/environments/development.js');
   this.template('config/environments/_production.js', 'config/environments/production.js');
-  this.template('config/environments/_test.js', 'config/environments/test.js');
 
   this.directory('config/initializers', 'config/intitializers');
 
@@ -108,7 +106,7 @@ MixtapeGenerator.prototype.gruntTasks = function gruntTasks() {
 MixtapeGenerator.prototype.serverSpecs = function serverSpecs() {
   var cb = this.async();
   
-  this.directory('specs', 'specs');  
+  this.directory('test', 'test');  
   
   cb();
 };
@@ -118,25 +116,30 @@ MixtapeGenerator.prototype.client = function client() {
   
   // generate client application dirs
   this.mkdir('client');
-  this.copy('client/config.js', 'client/config.js');
 
-  this.mkdir('client/app');
-  this.template('client/app/_app.js', 'client/app/app.js');
-  this.template('client/app/_routes.js', 'client/app/routes.js');
+  this.mkdir('client/src');
+  this.template('client/src/_main.js', 'client/src/main.js');
 
-  this.mkdir('client/app/controllers');
-  this.template('client/app/controllers/_nav.controller.js', 'client/app/controllers/nav.controller.js');
-  this.template('client/app/controllers/_home.controller.js', 'client/app/controllers/home.controller.js');
-
-  this.mkdir('client/app/directives');
-  this.mkdir('client/app/filters');
-  this.mkdir('client/app/services');
-
-  this.mkdir('client/assets/templates');
+  this.mkdir('client/src/filters');
+  this.mkdir('client/src/services');
   this.mkdir('client/dist');  
+
+  // Add the Tests
+  this.directory('client/test', 'client/test');
   
   cb();
 };
+
+MixtapeGenerator.prototype.appModule = function appModule() {
+  var cb = this.async();
+
+  this.mkdir('client/src/app');
+  this.template('client/src/app/_app.js', 'client/src/app/app.js');
+  this.template('client/src/app/_controllers.js', 'client/src/app/controllers.js');
+  this.template('client/src/app/_directives.js', 'client/src/app/directives.js');
+
+  cb();
+}
 
 MixtapeGenerator.prototype.assets = function assets() {
   var cb = this.async();
@@ -146,63 +149,9 @@ MixtapeGenerator.prototype.assets = function assets() {
   this.mkdir('client/assets/css');
   this.mkdir('client/assets/font');
   this.directory('client/assets/img', 'client/assets/img');
-
-  cb(); 
-};
-
-MixtapeGenerator.prototype.jadeTemplates = function jadeTemplates() {
-  var cb = this.async();
-  
-  this.mkdir('client/assets/jade');
-  this.template('client/assets/jade/_main.jade', 'client/assets/jade/main.jade');
-
-  // samples
-  this.mkdir('client/assets/jade/three');
-  this.mkdir('client/assets/jade/four');
-  this.mkdir('client/assets/jade/home');
-  this.template('client/assets/jade/three/_index.jade', 'client/assets/jade/three/index.jade');
-  this.template('client/assets/jade/four/_index.jade', 'client/assets/jade/four/index.jade');
-  this.template('client/assets/jade/home/_index.jade', 'client/assets/jade/home/index.jade');  
-  
-  cb();
-};
-
-MixtapeGenerator.prototype.clientLibs = function clientLibs() {
-  var cb = this.async();
-  
-  // assets/js directories
-  this.directory('client/assets/js', 'client/assets/js');   
-  
-  cb();
-};
-
-MixtapeGenerator.prototype.clientLess = function clientLess() {
-  var cb = this.async();
-
+  this.directory('client/assets/templates', 'client/assets/templates');
+  this.directory('client/assets/js', 'client/assets/js'); 
   this.directory('client/assets/less', 'client/assets/less');
-  
-  cb();
-};
-
-MixtapeGenerator.prototype.clientSpecs = function clientSpecs() {
-  var cb = this.async();
-  
-  this.mkdir('client/specs');
-  this.copy('client/specs/spec-main.js', 'client/specs/spec-main.js');
-
-  this.mkdir('client/specs/e2e');
-  this.mkdir('client/specs/e2e/app');
-  this.directory('client/specs/e2e/app/controllers', 'client/specs/e2e/app/controllers');
-  this.mkdir('client/specs/e2e/app/directives');
-  this.mkdir('client/specs/e2e/app/filters');
-  this.mkdir('client/specs/e2e/app/services');
-
-  this.mkdir('client/specs/unit');
-  this.mkdir('client/specs/unit/app');
-  this.directory('client/specs/unit/app/controllers', 'client/specs/unit/app/controllers');
-  this.mkdir('client/specs/unit/app/directives');
-  this.mkdir('client/specs/unit/app/filters');
-  this.mkdir('client/specs/unit/app/services');
 
   cb(); 
 };

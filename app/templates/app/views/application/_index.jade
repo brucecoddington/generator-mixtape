@@ -1,12 +1,12 @@
 !!! 5
 //if IE 7
-  html(lang="en", class="no-js ie", manifest="cache.manifest")
+  html(lang="en", class="no-js ie", data-ng-app="main", id="ng-app")
 //if IE 8
-  html(lang="en", class="no-js ie", manifest="cache.manifest")
+  html(lang="en", class="no-js ie", data-ng-app="main", id="ng-app")
 //if IE 9
-  html(lang="en", class="no-js ie9", manifest="cache.manifest")
+  html(lang="en", class="no-js ie9", data-ng-app="main", id="ng-app")
 //if [(gt IE 9)|!(IE)] <!
-html(class="no-js", manifest="cache.manifest")
+html(class="no-js", ng-app="main")
   // <![endif]
   head
     meta(charset="utf-8")
@@ -31,15 +31,80 @@ html(class="no-js", manifest="cache.manifest")
     link(href="/assets/css/style.css", rel="stylesheet", type="text/css")
 
   body
-    include ../templates/header
+    header
+      .container-fluid
+        .navbar(data-bs-navbar, data-ng-controller="NavController")
+          .navbar-inner
+            a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
 
-    .ng-view
+            a.brand(href="#") LoGo
 
-    include ../templates/footer
-    include ../templates/underfooter
+            .nav-collapse.collapse
+              ul.nav
+                li(data-match-route="/")
+                  a(href="#") HOME
 
-    - if (debug) 
-      script(src="config.js")
-      script(data-main="app", src="assets/js/components/requirejs/require.js")
+                li
+                  a(data-bs-dropdown="dropdown") 
+                    | SECOND 
+                    b.caret
+
+                li(id="link-three", data-match-route="/three")
+                  a(href="#/three") THIRD
+
+                li(data-match-route="/four")
+                  a(href="#/four") FOURTH
+
+    .container-fluid
+      .ng-view
+
+    #footer
+      .container-fluid
+        .row-fluid
+          .span10
+            #under-footer-copyright &copy; 2013, Somebody, All rights reserved.
+              .credit site by Someone
+
+          .span2
+            #under-footer-back-to-top
+              a(href="#")
+                i.icon-chevron-up
+
+    - if (env != 'development')              
+      script(src="app/app.js")
     - else
-      script(data-main="app", src="app/app.js")
+      script(src='assets/js/components/jquery/jquery.js')
+
+      // bootstrap
+      script(src='assets/js/components/bootstrap/docs/assets/js/bootstrap.js')
+      script(src='assets/js/components/bootstrap-datepicker/js/bootstrap-datepicker.js')
+      script(src='assets/js/components/bootstrap-timepicker/js/bootstrap-timepicker.js')
+      
+      script(src='assets/js/components/modernizr/modernizr.js')
+
+      // AngularJS libraries
+      script(src='assets/js/components/angular/build/angular.js')
+      script(src='assets/js/components/angular/build/angular-resource.js')
+      script(src='assets/js/components/angular/build/angular-cookies.js')
+      script(src='assets/js/components/angular-strap/dist/angular-strap.js')
+      
+      // Angular UI libraries
+      script(src='assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-0.4.0.js')
+      script(src='assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.4.0.js')
+      
+      // logger
+      script(src='assets/js/components/javascript-debug/ba-debug.js')
+
+      // utilities
+      script(src='assets/js/components/lodash/dist/lodash.js')
+      script(src='assets/js/components/moment/moment.js')
+
+      // application files
+      script(src='src/main.js')
+      script(src='src/app/app.js')
+      script(src='src/app/controllers.js')
+      script(src='src/app/directives.js')
+      

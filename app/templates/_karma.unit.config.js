@@ -1,19 +1,28 @@
-frameworks = ['mocha', 'requirejs'];
+module.exports = function(config) {
+    config.set({
+        frameworks: ['mocha'],
 
-files = [
-    {pattern: 'client/assets/js/**/*.js', included: false},
-    {pattern: 'node_modules/**/*.js', included: false},
-    {pattern: 'client/app/**/*.js', included: false},
-    {pattern: 'client/specs/unit/**/*.spec.js', included: false},
+        files: [
+          '../node_modules/chai/chai.js',
+          '../node_modules/sinon/lib/sinon.js',
 
-    "client/specs/spec-main.js"
-];
+        'dist/debug/app.js',
+        'assets/js/components/angular/build/angular-mocks.js',
+        
+        'test/unit/**/*.spec.js', 
 
-browsers = ['Chrome', 'Firefox'];
+        'assets/templates/**/*.html'
+    ],
 
-exclude = [
-    'config.js',
-    'app/app.js' // excluding this so that spec-main.js is used to register RequireJS for unit tests
-];
+    basePath : 'client',
 
-plugins = ['karma-mocha', 'karma-requirejs', 'karma-chrome-launcher', 'karma-firefox-launcher'];
+    // generate js files from html templates
+    preprocessors : {
+      'assets/templates/**/*.html': 'html2js'
+    },
+
+        browsers: ['Chrome', 'Firefox'],
+
+        plugins: ['karma-mocha', 'karma-chrome-launcher', 'karma-firefox-launcher', 'karma-ng-html2js-preprocessor']
+    });
+};

@@ -1,7 +1,7 @@
 var express = require('express');
 
 module.exports = function() {
-  this.set('port', 8880);
+  this.set('port', 3003);
 
   this.use(express.errorHandler({
     dumpExceptions: true,
@@ -9,7 +9,7 @@ module.exports = function() {
   }));
 
   // Serve static content
-  this.use(express.static(__dirname + "/../../client/dist/angular-locomotive-bootstrap-debug"));
+  this.use(express.static(__dirname + "/../../client/dist/<%= _.slugify(prototypeName) %>-debug"));
 
   this.use(function (req, res) {
     res.send(404);

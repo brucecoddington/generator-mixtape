@@ -9,7 +9,7 @@ module.exports = function (grunt) {
 
         // The clean task ensures all files are removed from the dist/ directory so
         // that no files linger from previous builds.
-        clean: ["client/dist", "client/docs"],
+        clean: ["client/dist", "client/docs", "client/test-reports"],
 
         // The jshint option for scripturl is set to lax, because the anchor
         // override inside main.js needs to test for them so as to not accidentally
@@ -20,22 +20,21 @@ module.exports = function (grunt) {
                 laxcomma: true,
                 nomen: false,
                 globals : {
-                    require: true
+                    angular: true,
+                    chai: true,
+                    describe: true, 
+                    beforeEach: true, 
+                    afterEach: true, 
+                    it: true, 
+                    xit: true 
                 }
             },
             code : {
-                src: ["client/app/**/*.js"],
+                src: ["client/src/**/*.js"]
             },
             specs : {
-                src: ["client/specs/**/*.js"],
+                src: ["client/test/**/*.js"],
                 options: {
-                    globals: {
-                        define: true, 
-                        beforeEach: true, 
-                        afterEach: true, 
-                        it: true, 
-                        xit: true
-                    },
                     expr: true
                 }
             }
@@ -45,8 +44,42 @@ module.exports = function (grunt) {
         // shim and the templates into the application code.  
         concat:{
             dist : {
-                src : ["client/assets/js/components/almond/almond.js", "client/dist/debug/app.js"],
-                dest: "client/dist/release/app.js"
+                src : [
+                    // jquery and plugins
+                    'client/assets/js/components/modernizr/modernizr.js',
+                    'client/assets/js/components/jquery/jquery.js',
+
+                    // bootstrap
+                    'client/assets/js/components/bootstrap/docs/assets/js/bootstrap.js',
+                    'client/assets/js/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                    'client/assets/js/components/bootstrap-timepicker/js/bootstrap-timepicker.js',
+                    
+
+                    // AngularJS libraries
+                    'client/assets/js/components/angular/build/angular.js',
+                    'client/assets/js/components/angular/build/angular-resource.js',
+                    'client/assets/js/components/angular/build/angular-cookies.js',
+                    'client/assets/js/components/angular-strap/dist/angular-strap.js',
+
+                    // Angular UI libraries
+                    'client/assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-0.4.0.js',
+                    'client/assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.4.0.js',
+                    
+                    // logger
+                    'client/assets/js/components/javascript-debug/ba-debug.js',
+
+                    // utilities
+                    'client/assets/js/components/lodash/dist/lodash.js',
+                    'client/assets/js/components/moment.js',
+
+                    // application files
+                    'client/src/app/controllers.js',
+                    'client/src/app/directives.js',
+                    'client/src/app/app.js',
+                    'client/src/main.js'
+
+                ],
+                dest: "client/dist/debug/app.js"
             }
         },
 
@@ -75,16 +108,20 @@ module.exports = function (grunt) {
 
         // A task that runs in the background 'watching' for changes to code.
         watch : {
+            options : {
+                livereload: true
+            },
             client: {
                 files: [
-                    'client/app/**/*.js', 
-                    'client/specs/**/*.js'
+                    'client/src/**/*.js', 
+                    'client/test/**/*.js',
+                    'client/assets/templates/**/*.html'
                 ],
                 tasks: ['assemble', 'karma:unit:run', 'karma:e2e:run']
             },
             server : {
                 files: [
-                    'specs/**/*.js',
+                    'test/**/*.js',
                     'app/**/*.js'
                 ],
                 tasks: ['mochacli']
@@ -92,25 +129,10 @@ module.exports = function (grunt) {
             views : {
                 files: [
                     'app/views/**/*.jade',
-                    'client/assets/less/**/*.less', 
-                    'client/assets/jade/**/*.jade'
+                    'client/assets/less/**/*.less'
                 ],
                 tasks: ['assemble']
             }
-        },
-
-        requirejs : {
-            compile : {
-                options: {
-                    name: "app",
-                    baseUrl: "client/app",
-                    optimizeCss: 'none',
-                    optimize: 'none',
-                    mainConfigFile: "client/config.js",
-                    out: "client/dist/debug/app.js",
-                    insertRequire: ['app']
-                }
-            }            
         },
 
         // Compiles the Less files into the style.css file.
@@ -127,20 +149,30 @@ module.exports = function (grunt) {
 
         // Start the Karma test runner for the client tests. 
         karma : {
-            options : {
-                reporters: 'dots',
-                background: true
-            },
             unit : {
-                configFile: 'karma.unit.config.js'
+                configFile: 'karma.unit.config.js',
+                options: {
+                    reporters: 'dots',
+                    background: true
+                }
             },
 
             e2e : {
                 configFile: 'karma.e2e.config.js',
                 options : {
+                    reporters: 'dots',
                     port: 9877,
-                    runnerPort: 9101
+                    runnerPort: 9101,
+                    background: true
                 }
+            },
+
+            unitci : {
+                configFile: 'karma.ci.unit.config.js'
+            },
+
+            e2eci : {
+                configFile: 'karma.ci.e2e.config.js'
             }
         },
 
@@ -150,22 +182,7 @@ module.exports = function (grunt) {
                 reporter: 'spec',
                 bail: true
             }, 
-            all : ['specs/**/*.js']
-        },
-
-        // generate HTML5 offline app cache manifest
-        manifest: {
-            release: {
-                options: {
-                    cwd : 'client/',
-                    network : ["*"],
-                    timestamp : true
-                },
-                src: [
-                    "assets/images/**"
-                ],
-                dest: "cache.manifest"
-            }
+            all : ['test/**/*.js']
         },
 
         copy: {
@@ -176,11 +193,11 @@ module.exports = function (grunt) {
                 files: [
                     {expand: true, 
                         cwd: 'client/assets', 
-                        src:['images/**', 'templates/**', 'js/**', 'font/**'], 
+                        src:['img/**', 'templates/**', 'font/**'], 
                         dest: 'client/dist/<%= pkg.name %>/assets'},
                     {expand: true, 
                         cwd: 'client/dist/release', 
-                        src:['app.js'], 
+                        src:['app.min.js'], 
                         dest:'client/dist/<%= pkg.name %>/app'},
                     {expand: true, 
                         cwd: 'client/dist/assets/css', 
@@ -195,12 +212,12 @@ module.exports = function (grunt) {
             debug : {
                 files: [
                     {expand: true, 
-                        cwd: 'client/app', 
-                        src:['**'], 
+                        cwd: 'client/dist/debug', 
+                        src:['app.js'], 
                         dest: 'client/dist/<%= pkg.name %>-debug/app'},
                     {expand: true, 
                         cwd: 'client/assets', 
-                        src: ['images/**', 'templates/**', 'js/**', 'font/**'], 
+                        src: ['img/**', 'templates/**', 'font/**'], 
                         dest: 'client/dist/<%= pkg.name %>-debug/assets'},
                     {expand: true, 
                         cwd: 'client/dist/assets/css', 
@@ -239,22 +256,13 @@ module.exports = function (grunt) {
                 files: {
                     'client/dist/release/index.html': ['app/views/application/index.jade']
                 }
-            }, 
-            templates : {
-               files: [{
-                   expand: true,
-                   cwd: 'client/assets/jade',
-                   src: ['**/*.jade'],
-                   dest: 'client/assets/templates',
-                   ext: '.html'
-               }]
-           }
+            }
         },
 
         // The **docco** task iterates through the `src` files and creates annotated source reports for them.
         docco: {
             client: {
-                src: "client/app/**/*.js",
+                src: "client/src/**/*.js",
                 dest: "client/docs/client"
             },
 
@@ -290,6 +298,12 @@ module.exports = function (grunt) {
             test : {
                 env: 'test'
             }
+        },
+
+        runappci: {
+            all :{
+                env: 'development'
+            }
         }, 
 
         shell : {
@@ -303,6 +317,37 @@ module.exports = function (grunt) {
                     'grunt karma:e2e',
                     'grunt watch'
                 ].join('&')
+            },
+            angular : {
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    execOptions: {
+                        cwd: 'client/assets/js/components/angular'
+                    }
+                },
+                command: 'npm install'
+            },
+            angularui : {
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    execOptions: {
+                        cwd: 'client/assets/js/components/angular-ui-bootstrap'
+                    }
+                },
+                command: 'npm install'
+            }
+        },
+
+        hub: {
+            angular: {
+                src: ['client/assets/js/components/angular/Gruntfile.js'],
+                tasks: ['package']
+            }, 
+            angularui: {
+                src: ['client/assets/js/components/angular-ui-bootstrap/Gruntfile.js'],
+                tasks: ['build']
             }
         }
 
@@ -312,6 +357,8 @@ module.exports = function (grunt) {
 
     // Load the necessary tasks
     grunt.loadTasks("grunt_tasks");
+
+    grunt.loadNpmTasks('grunt-hub');
     grunt.loadNpmTasks("grunt-contrib-concat");
     grunt.loadNpmTasks("grunt-contrib-jade");
     grunt.loadNpmTasks("grunt-contrib-less");
@@ -320,7 +367,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
-    grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-shell");
@@ -328,16 +374,29 @@ module.exports = function (grunt) {
 
     // **********************************************************************************************
 
+    //Initialize a fresh project.  This will build any dependencies and run the default grunt task.
+    grunt.registerTask("init", ['builddeps', 'assemble']);
+
+    //Build dependencies of the project
+    grunt.registerTask("builddeps", ['angular']);
+
+    //Build angular.js
+    grunt.registerTask("angular", ['shell:angular', 'shell:angularui', 'hub:angular', 'hub:angularui']);
+    
     // The default task will remove all contents inside the dist/ folder, lint
     // all your code, precompile all the underscore templates into
     // dist/debug/templates.js, compile all the application code into
     // dist/debug/require.js, and then concatenate the require/define shim
     // almond.js and dist/debug/templates.js into the require.js file.
     
-    grunt.registerTask("default", ['clean', 'jshint', 'less', 'requirejs', 'cssmin', 'jade']);
+    grunt.registerTask("default", ['clean', 'jshint', 'less', 'cssmin', 'jade']);
+
+    // Forks off the application server and runs the unit and e2e tests.
+    // Test results stored in client/test-reports
+    grunt.registerTask("test", ['assemble', 'runappci', 'karma:unitci', 'karma:e2eci']);
 
     // Task to package everything up for deployment
-    grunt.registerTask("assemble", ['default', 'concat', 'copy:vendor', 'copy:debug', 'copy:release']);
+    grunt.registerTask("assemble", ['default', 'concat', 'uglify', 'copy:vendor', 'copy:debug', 'copy:release']);
 
     // Task to kickoff the grunt build for development 
     // This will start both Karma test runners (unit, e2e) and the 'watch' task.

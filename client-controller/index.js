@@ -20,33 +20,34 @@ var ClientControllerGenerator = module.exports = function ClientControllerGenera
 
 util.inherits(ClientControllerGenerator, yeoman.generators.NamedBase);
 
-ClientControllerGenerator.prototype.setVariables = function setVariables() {
-    if (this._.include(this.name, '/')) {
-        var lower = this.name.toLowerCase();
-        var parsed = this._.words(lower, "/");
-        this.name = this._.last(parsed);
-        this.path = this._.initial(parsed);
-    }
-}
+ClientControllerGenerator.prototype.askFor = function askFor() {
+  var cb = this.async();
+
+  // have Yeoman greet the user.
+  console.log(this.yeoman);
+
+  var prompts = [{
+    name: 'moduleName',
+    message: 'What module with this controller be namespaced to?'
+  }];
+
+  this.prompt(prompts, function (props) {
+    this.moduleName = props.moduleName;
+
+    cb();
+  }.bind(this));
+};
 
 ClientControllerGenerator.prototype.directories = function directories() {
-  var controllerDirs = this.controllerDirs = this._.flatten(['client/app/controllers', this.path]).join('/');
-  var e2eDirs = this.e2eDirs = this._.flatten(['client/specs/e2e/app/controllers', this.path]).join('/');
-  var unitDirs = this.unitDirs = this._.flatten(['client/specs/unit/app/controllers', this.path]).join('/');
+  var controllerDirs = this.controllerDirs = this._.flatten(['client/src', this.moduleName]).join('/');
+  var e2eDirs = this.e2eDirs = this._.flatten(['client/test/e2e/', this.moduleName]).join('/');
+  var unitDirs = this.unitDirs = this._.flatten(['client/test/unit/', this.moduleName]).join('/');
 
   this.mkdir(controllerDirs);
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
 
   console.log('Created the needed directories.');
-}
-
-ClientControllerGenerator.prototype.module = function module() {
-  var modulePath = this._.flatten(['controllers', this.path]).join('/');
-
-  this.module = [addTrailingSlash(this, modulePath), this.name, '.controller'].join('');
-
-  console.log('RequireJS module name compiled.');
 }
 
 ClientControllerGenerator.prototype.files = function files() {

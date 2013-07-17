@@ -1,27 +1,24 @@
-define(function(require) {
-    'use strict';
+(function () {
+  'use strict';
 
-    var expect = require('chai').expect;
-    var angular = require('angular');
-    var mocks = require('ngMocks');
+  var expect = chai.expect;
+  var controller, scope;
 
-    require('ngStrap');
+  describe('<%= _.capitalize(moduleName) %>', function() {
+   
+    describe('Controllers', function() {
+        
+      beforeEach(module('<%= moduleName %>.controllers'));
 
-    var app, controller, scope;
+      describe('<%= _.capitalize(name) %>Controller', function () {
 
-    describe('<%= name %>.controller', function () {
-
-        beforeEach (function () {
-            app = angular.module("app", []);
-            require('<%= module %>')();
-            angular.mock.module('app');
-
-            inject(function($rootScope, $controller){
-                scope = $rootScope.$new();
-                controller = $controller('<%= _.capitalize(name) %>Controller', {
-                    $scope: scope
-                }); 
-            });
+        beforeEach(function (){
+          inject(function($rootScope, $controller){
+            scope = $rootScope.$new();
+            controller = $controller('<%= _.capitalize(name) %>Controller', {
+                $scope: scope
+            }); 
+          });
         });
 
         afterEach (function () {
@@ -31,5 +28,8 @@ define(function(require) {
         it('should be a passing spec', function () {
             expect(true).to.be.ok;
         });
+
+      });
     });
-});
+  });
+}());

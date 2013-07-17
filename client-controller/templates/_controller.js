@@ -1,26 +1,16 @@
-/*global define*/
+(function () {
+  'use strict';
 
-define(function (require) {
-    
-  var logger = require('logger');
+  var logger = window.debug;
 
-  return function () {
-    logger.info('Registering <%= _.capitalize(name) %>Controller');
+  angular.module('<%= moduleName %>.controllers', []).
+    controller('<%= _.capitalize(name) %>Controller', [
+      '$scope',
+      function ($scope){
+         
+      }
+    ]);
 
-    require('angular').module('app').controller('<%= _.capitalize(name) %>Controller',
-      [
-        '$scope',
-        function ($scope){
-            $scope.messages = {
-              boo: "booyaa!"
-            };
+    logger.debug('Registered <%= moduleName %>.<%= _.capitalize(name) %>Controller');
 
-            $scope.alert = function (msg) {
-              window.alert('clicked' + msg +'!');
-            };
-        }
-      ]
-    );
-  };
-    
-});
+}());

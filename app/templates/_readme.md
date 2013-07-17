@@ -1,8 +1,8 @@
-# Locomotive/Express application boilerplate with Angular/RequireJS client application. #
+# <%= _.slugify(prototypeName) %> #
 
 # Getting Started #
 
-This is not a framework..just a collection of some awesome frameworks molded to work together (kinda like a mixtape). Thank you to all of these projects for making my life easier. 
+Track list:
 
 * [Locomotive](http://locomotivejs.org/)
 * [Express](http://expressjs.com/)
@@ -29,16 +29,21 @@ This mixtape is heavily influenced by these projects
 # Dependencies #  
 
 * [Node](http://nodejs.org/)
+* [Mongo](http://www.mongodb.org/)
+* [Redis](http://redis.io/)
 * [Grunt](https://github.com/cowboy/grunt) `npm install -g grunt-cli` 
 * [Bower](http://twitter.github.com/bower/) `npm install -g bower`
+* [Nodemon](https://github.com/remy/nodemon/) `npm install -g nodemon`
+* [Docco](http://jashkenas.github.io/docco/) `npm install -g docco`
+* [Karma](https://github.com/karma-runner/karma/) `npm install -g karma`
 
-# Start your Application: #
+# Starting: #
 
 #### Install the Node dependencies locally. ####
 `npm install`
 
-#### Install the Browser dependencies. ####
-`bower install`
+#### Run init task to initialize a freshly checked out project ####
+`grunt init`
 
 ## These are the Grunt.js tasks that are available: ##
 
@@ -65,6 +70,12 @@ This mixtape is heavily influenced by these projects
 
 ## And a couple of shortcut tasks to run various combinations: ##
 
+* `grunt init` 
+
+  * Runs bower install
+  * Builds project dependencies (Angular)
+  * Runs the assemble task
+
 * `grunt debug` 
 
   * Cleans the project 
@@ -79,3 +90,11 @@ This mixtape is heavily influenced by these projects
   * Does everything in the 'debug' task
   * Concatenates the compiled JS with Almond.js 
   * Assembles and packages the application.
+
+* `grunt test`
+
+  * Does everything in the 'assemble' task
+  * Forks the current process and starts the application server (for e2e testing)
+  * Runs the karma unit tests `karma:unitci`
+  * Runs the karma e2e tests `karma:e2eci`
+  * On completion, the forked node server shuts down

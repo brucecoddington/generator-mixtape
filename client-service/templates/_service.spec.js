@@ -1,35 +1,30 @@
-define(function(require) {
-    'use strict';
+(function () {
+  'use strict';
 
-    var expect = require('chai').expect;
-    var angular = require('angular');
-    var mocks = require('ngMocks');
+  var expect = chai.expect;
+  var service, scope;
 
-    require('ngStrap');
+  describe('<%= name %>.service', function () {
 
-    var app, service, scope;
+    beforeEach(module("<%= module %>"));
 
-    describe('<%= name %>.service', function () {
-
-        beforeEach (function () {
-            app = angular.module("app", []);
-            require('<%= module %>')();
-            angular.mock.module('app');
-
-            inject(function($rootScope, $service){
-                scope = $rootScope.$new();
-                service = $service('<%= _.capitalize(name) %>Service', {
-                    $scope: scope
-                }); 
-            });
-        });
-
-        afterEach (function () {
-            // make sure you clean up any test doubles
-        });
-
-        it('should be a passing spec', function () {
-            expect(true).to.be.ok;
-        });
+    beforeEach (function () {
+      inject(function($rootScope, $service){
+        scope = $rootScope.$new();
+        service = $service('<%= _.capitalize(name) %>Service', {
+            $scope: scope
+        }); 
+      });
     });
-});
+
+    afterEach (function () {
+        // make sure you clean up any test doubles
+    });
+
+    it('should be a passing spec', function () {
+        expect(true).to.be.ok;
+    });
+
+  });
+
+}());
