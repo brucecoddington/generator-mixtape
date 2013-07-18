@@ -3,43 +3,40 @@
 
     var expect = chai.expect;
 
-    describe('_.capitalize(moduleName)', function() {
-     
-        describe('Directives', function() {
+    describe('<%= moduleName %>.directives', function() {
 
-            describe('<%= _.capitalize(name) %>', function () {
+        describe('<%= _.capitalize(name) %>', function () {
 
-                var appDirectives, scope, elm;
+            var appDirectives, scope, elm;
 
-                beforeEach(function () {
-                    angular.mock.module('<%= moduleName %>.directives');
-                });
+            beforeEach(function () {
+                angular.mock.module('<%= moduleName %>.directives');
+            });
 
-                beforeEach(module( 'assets/templates/<%= moduleName %>/<%= name %>.html'));
+            beforeEach(module( 'assets/templates/<%= moduleName %>/<%= name %>.html'));
+            
+            beforeEach(function () {
                 
-                beforeEach(function () {
-                    
-                    inject(function($rootScope, $compile){
-                        scope = $rootScope.$new();
+                inject(function($rootScope, $compile){
+                    scope = $rootScope.$new();
 
-                        elm = angular.element(
-                            '<div class="container">' + 
-                                '<div <%= _.slugify(name) %>>This is a test</div>' +
-                            '</div>');
+                    elm = angular.element(
+                        '<div class="container">' + 
+                            '<div <%= _.slugify(name) %>>This is a test</div>' +
+                        '</div>');
 
-                        $compile(elm)(scope);
-                        scope.$digest();
-                    });
+                    $compile(elm)(scope);
+                    scope.$digest();
                 });
+            });
 
-                it('should replace the text with the template', function() {
-                    var container = elm.find('div');
+            it('should replace the text with the template', function() {
+                var container = elm.find('div');
 
-                    expect(container.text()).to.equal('This is a test.');
-                });
-
+                expect(container.text()).to.equal('This is a test.');
             });
 
         });
+
     });
 }());

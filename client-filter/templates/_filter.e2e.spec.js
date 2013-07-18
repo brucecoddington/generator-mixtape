@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('<%= name %>.filter', function () {
+    describe('filters.<%= name %>', function () {
 
         beforeEach (function () {
             browser().navigateTo("/");

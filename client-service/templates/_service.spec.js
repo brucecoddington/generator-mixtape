@@ -4,7 +4,7 @@
   var expect = chai.expect;
   var service, scope;
 
-  describe('<%= name %>.service', function () {
+  describe('services.<%= name %>', function () {
 
     beforeEach(module("<%= module %>"));
 

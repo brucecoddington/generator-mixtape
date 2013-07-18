@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('<%= _.slugify(moduleName) %>.controller', function () {
+    describe('<%= _.slugify(moduleName) %>.controllers', function () {
 
         beforeEach (function () {
             browser().navigateTo("/");

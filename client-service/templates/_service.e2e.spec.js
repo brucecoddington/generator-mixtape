@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('<%= name %>.service', function () {
+    describe('services.<%= name %>', function () {
 
         beforeEach (function () {
             browser().navigateTo("/");
