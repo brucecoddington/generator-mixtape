@@ -1,19 +1,16 @@
-/*global define*/
+(function () {
+  'use strict';
 
-define(function (require) {
+  var logger = window.debug;
 
-  var logger = require('logger');
-
-  return function () {
-    logger.info('Registering <%= _.capitalize(name) %>Filter');
-
-    require('angular').module('app').filter('<%= _.capitalize(name) %>Filter',
-      [
+  angular.module('filters').
+    filter('<%= name %>', [
         '$DEP',
         function ($DEP) {
           return function (){};
         }
-      ]
-    );
-  };
-});
+      ]);
+
+    logger.debug('Registered filters.<%= name %>');
+
+}());

@@ -41,14 +41,6 @@ ClientServiceGenerator.prototype.directories = function directories() {
   console.log('Created the needed directories.');
 }
 
-ClientServiceGenerator.prototype.module = function module() {
-  var modulePath = this._.flatten(['services', this.path]).join('/');
-
-  this.module = [addTrailingSlash(this, modulePath), this.name, '.service'].join('');
-
-  console.log('RequireJS module name compiled.');
-}
-
 ClientServiceGenerator.prototype.files = function files() {
   var e2eSpecPathAndName = [addTrailingSlash(this, this.e2eDirs), this.name, '.e2e.spec.js'].join('');
   this.template('_service.e2e.spec.js', e2eSpecPathAndName);

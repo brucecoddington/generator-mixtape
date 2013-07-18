@@ -69,7 +69,7 @@ MixtapeGenerator.prototype.projectfiles = function projectfiles() {
   this.template('_karma.ci.unit.config.js', 'karma.ci.unit.config.js');
   this.template('_karma.ci.e2e.config.js', 'karma.ci.e2e.config.js');
   this.template('_nodemonignore', '.nodemonignore');
-  this.template('_readme.md', 'readme.md');
+  this.template('_readme.md', 'README.md');
   this.copy('server.js', 'server.js');  
   
   cb();
@@ -121,7 +121,10 @@ MixtapeGenerator.prototype.client = function client() {
   this.template('client/src/_main.js', 'client/src/main.js');
 
   this.mkdir('client/src/filters');
+  this.template('client/src/filters/_filters.js', 'client/src/filters/filters.js');
+
   this.mkdir('client/src/services');
+  this.template('client/src/services/_services.js', 'client/src/services/services.js');
   this.mkdir('client/dist');  
 
   // Add the Tests

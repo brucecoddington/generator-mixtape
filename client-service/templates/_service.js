@@ -3,7 +3,7 @@
 
     logger.info("Registering <%= _.capitalize(name) %>Service");
 
-    angular.module('app').factory('<%= _.capitalize(name) %>Service', 
+    angular.module('services').factory('<%= _.capitalize(name) %>Service', 
       [
         '$DEPS',
         function ($DEPS) {

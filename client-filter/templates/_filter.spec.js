@@ -1,24 +1,17 @@
-define(function(require) {
+(function() {
     'use strict';
 
-    var expect = require('chai').expect;
-    var angular = require('angular');
-    var mocks = require('ngMocks');
+    var expect = chai.expect;
+    var filter, scope;
 
-    require('ngStrap');
+    describe('filters.<%= name %>', function () {
 
-    var app, filter, scope;
-
-    describe('<%= name %>.filter', function () {
+        beforeEach(module('filters.<%= name %>'));
 
         beforeEach (function () {
-            app = angular.module("app", []);
-            require('<%= module %>')();
-            angular.mock.module('app');
-
             inject(function($rootScope, $filter){
                 scope = $rootScope.$new();
-                filter = $filter('<%= _.capitalize(name) %>Filter', {
+                filter = $filter('<%= name %>', {
                     $scope: scope
                 }); 
             });

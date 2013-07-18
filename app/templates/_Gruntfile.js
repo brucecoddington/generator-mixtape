@@ -73,6 +73,8 @@ module.exports = function (grunt) {
                     'client/assets/js/components/moment.js',
 
                     // application files
+                    'client/src/directives/directives.js',
+                    'client/src/filters/filters.js',
                     'client/src/app/controllers.js',
                     'client/src/app/directives.js',
                     'client/src/app/app.js',

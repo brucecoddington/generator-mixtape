@@ -13,12 +13,12 @@ var ClientFilterGenerator = module.exports = function ClientFilterGenerator(args
 util.inherits(ClientFilterGenerator, yeoman.generators.NamedBase);
 
 ClientFilterGenerator.prototype.setVariables = function setVariables() {
-    if (this._.include(this.name, '/')) {
-        var lower = this.name.toLowerCase();
-        var parsed = this._.words(lower, "/");
-        this.name = this._.last(parsed);
-        this.path = this._.initial(parsed);
-    }
+  if (this._.include(this.name, '/')) {
+    var lower = this.name.toLowerCase();
+    var parsed = this._.words(lower, "/");
+    this.name = this._.last(parsed);
+    this.path = this._.initial(parsed);
+  }
 }
 
 ClientFilterGenerator.prototype.directories = function directories() {
@@ -31,14 +31,6 @@ ClientFilterGenerator.prototype.directories = function directories() {
   this.mkdir(unitDirs);
 
   console.log('Created the needed directories.');
-}
-
-ClientFilterGenerator.prototype.module = function module() {
-  var modulePath = this._.flatten(['filters', this.path]).join('/');
-
-  this.module = [addTrailingSlash(this, modulePath), this.name, '.filter'].join('');
-
-  console.log('RequireJS module name compiled.');
 }
 
 ClientFilterGenerator.prototype.files = function files() {
