@@ -1,5 +1,5 @@
 # generator-mixtape
-A generator for [mixtape](https://github.com/brucecoddington/generator-mixtape.git).
+A generator for [mixtape](https://github.com/brucecoddington/mixtape.git).
 
 ## Getting started
 - Make sure you have [yo](https://github.com/yeoman/yo) installed:
