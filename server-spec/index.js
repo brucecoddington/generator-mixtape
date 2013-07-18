@@ -2,6 +2,14 @@
 var util = require('util');
 var yeoman = require('yeoman-generator');
 
+var addTrailingSlash = function addTrailingSlash(task, path) {
+  if (!task._.endsWith(path, '/')) {
+    path += "/";
+  }
+
+  return path; 
+};
+
 var ServerSpecGenerator = module.exports = function ServerSpecGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
   // as `this.name`.
