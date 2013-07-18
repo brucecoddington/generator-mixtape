@@ -12,6 +12,24 @@ var ServerSpecGenerator = module.exports = function ServerSpecGenerator(args, op
 
 util.inherits(ServerSpecGenerator, yeoman.generators.NamedBase);
 
+ServerSpecGenerator.prototype.setVariables = function setVariables() {
+  if (this._.include(this.name, '/')) {
+    var lower = this.name.toLowerCase();
+    var parsed = this._.words(lower, "/");
+    this.name = this._.last(parsed);
+    this.path = this._.initial(parsed);
+  }
+}
+
+ServerSpecGenerator.prototype.directories = function directories() {
+  var specDirs = this.specDirs = this._.flatten(['test', this.path]).join('/');
+  this.mkdir(specDirs);
+
+  console.log('Created the needed directories.');
+}
+
 ServerSpecGenerator.prototype.files = function files() {
-  this.copy('somefile.js', 'somefile.js');
+  var specPathAndName = [addTrailingSlash(this, this.specDirs), this.name, '.spec.js'].join('');
+  this.template('_spec.js', specPathAndName);
+  console.log('Mocha spec created.');
 };
