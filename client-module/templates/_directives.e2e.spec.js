@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    describe('<%= name %>', function () {
+    describe('<%= name %>.directives', function () {
 
         beforeEach (function () {
             browser().navigateTo("/");
@@ -9,7 +9,7 @@
         });
 
         it('be a passing spec', function () {
-            expect(true).to.be.ok;
+            expect(element('body').count()).toEqual(1);
         });
     });
 

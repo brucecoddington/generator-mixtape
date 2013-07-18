@@ -28,7 +28,7 @@ ClientControllerGenerator.prototype.askFor = function askFor() {
 
   var prompts = [{
     name: 'moduleName',
-    message: 'What module with this controller be namespaced to?'
+    message: 'What module will this controller be namespaced to?'
   }];
 
   this.prompt(prompts, function (props) {
@@ -40,8 +40,8 @@ ClientControllerGenerator.prototype.askFor = function askFor() {
 
 ClientControllerGenerator.prototype.directories = function directories() {
   var controllerDirs = this.controllerDirs = this._.flatten(['client/src', this.moduleName]).join('/');
-  var e2eDirs = this.e2eDirs = this._.flatten(['client/test/e2e/', this.moduleName]).join('/');
-  var unitDirs = this.unitDirs = this._.flatten(['client/test/unit/', this.moduleName]).join('/');
+  var e2eDirs = this.e2eDirs = this._.flatten(['client/test/e2e', this.moduleName]).join('/');
+  var unitDirs = this.unitDirs = this._.flatten(['client/test/unit', this.moduleName]).join('/');
 
   this.mkdir(controllerDirs);
   this.mkdir(e2eDirs);
@@ -62,4 +62,6 @@ ClientControllerGenerator.prototype.files = function files() {
   var controllerPathAndName = [addTrailingSlash(this, this.controllerDirs), this.name, '.controller.js'].join('');
   this.template('_controller.js', controllerPathAndName);
   console.log('Controller created.');
+
+  console.log('Do not forget to register your new controller within index.html and your Grunt build!!');
 };

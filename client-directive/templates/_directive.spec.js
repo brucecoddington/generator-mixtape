@@ -1,50 +1,45 @@
-define(function(require) {
+(function (){
     'use strict';
 
-    var expect = require('chai').expect;
-    var angular = require('angular');
-    var mocks = require('ngMocks');
+    var expect = chai.expect;
 
-    require('ngStrap');
+    describe('_.capitalize(moduleName)', function() {
+     
+        describe('Directives', function() {
 
-    var app, directive, scope;
+            describe('<%= _.capitalize(name) %>', function () {
 
-    describe('<%= name %>.directive', function () {
+                var appDirectives, scope, elm;
 
-          // load the templates
-        beforeEach(module('<%= template %>'));
+                beforeEach(function () {
+                    angular.mock.module('<%= moduleName %>.directives');
+                });
 
-        beforeEach(inject(function($rootScope, $compile) {
-            // we might move this tpl into an html file as well...
-            elm = angular.element(
-                '<div>' +
-                'mock your dom here' +
-                '</div>');
+                beforeEach(module( 'assets/templates/<%= moduleName %>/<%= name %>.html'));
+                
+                beforeEach(function () {
+                    
+                    inject(function($rootScope, $compile){
+                        scope = $rootScope.$new();
 
-            scope = $rootScope;
-            $compile(elm)(scope);
-            scope.$digest();
-        }));
+                        elm = angular.element(
+                            '<div class="container">' + 
+                                '<div <%= _.slugify(name) %>>This is a test</div>' +
+                            '</div>');
 
-        beforeEach (function () {
-            app = angular.module("app", []);
-            require('<%= module %>')();
-            angular.mock.module('app');
+                        $compile(elm)(scope);
+                        scope.$digest();
+                    });
+                });
 
-            inject(function($rootScope, $directive){
-                scope = $rootScope.$new();
-                directive = $directive('<%= _.capitalize(name) %>Directive', {
-                    $scope: scope
-                }); 
+                it('should replace the text with the template', function() {
+                    var container = elm.find('div');
+
+                    expect(container.text()).to.equal('This is a test.');
+                });
+
             });
-        });
 
-        afterEach (function () {
-            // make sure you clean up any test doubles
-        });
-
-        it('should be a passing spec', function () {
-            expect(true).to.be.ok;
         });
     });
-});
+}());

@@ -1,33 +1,29 @@
-/*global define*/
+(function () {
+  'use strict';
 
-define(function (require){
+  var logger = window.debug;
 
-  var logger = require('logger');
+  var <%= name %>Controller = function ($scope, $element) {
+    $element.bind('click', function () {
+      console.log('Turn up the volume.');
+    });
+  };
 
-  return function () {
-    logger.info('Registering <%= _.capitalize(name) %>Directive');
+  logger.debug("Registering <%= moduleName %>.directives");
 
-    require('angular').module('app').directive('<%= _.capitalize(name) %>Directive', 
-      [
-        '$DEPS',
-        function ($DEPS) {
-          
-          var controller = function ($scope, $element) {
-
-          };
-
-          return {
-            controller: controller,
-            replace: true,
-            require: '???',
-            restrict: 'E',
-            scope: {},
-            templateUrl: 'assets/templates/template.html',
-            transclude: true
-          };
-        }
-      ]
+  angular.module('<%= moduleName %>.directives', [])
+    .directive('<%= name %>', 
+      function () {
+        return {
+          controller: <%= name %>Controller,
+          replace: true,
+          transclude: true,
+          restrict: 'A',
+          //require : '???', // add a parent if needed 
+          scope: {},
+          templateUrl: 'assets/templates/<%= moduleName %>/<%= name %>.html'
+        };
+      }
     );
 
-  };
-});
+}());

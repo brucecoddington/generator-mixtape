@@ -20,33 +20,40 @@ var ClientDirectiveGenerator = module.exports = function ClientDirectiveGenerato
 
 util.inherits(ClientDirectiveGenerator, yeoman.generators.NamedBase);
 
-ClientDirectiveGenerator.prototype.setVariables = function setVariables() {
-    if (this._.include(this.name, '/')) {
-        var lower = this.name.toLowerCase();
-        var parsed = this._.words(lower, "/");
-        this.name = this._.last(parsed);
-        this.path = this._.initial(parsed);
-    }
-}
+ClientDirectiveGenerator.prototype.askFor = function askFor() {
+  var cb = this.async();
+
+  // have Yeoman greet the user.
+  console.log(this.yeoman);
+
+  var prompts = [{
+    name: 'moduleName',
+    message: 'What module will this directive be namespaced to?'
+  }, {
+    name: 'hasController',
+    message: 'Will this directive be needing a controller?'
+  }];
+
+  this.prompt(prompts, function (props) {
+    this.moduleName = props.moduleName;
+    this.hasController = props.hasController;
+
+    cb();
+  }.bind(this));
+};
 
 ClientDirectiveGenerator.prototype.directories = function directories() {
-  var directiveDirs = this.directiveDirs = this._.flatten(['client/app/directives', this.path]).join('/');
-  var e2eDirs = this.e2eDirs = this._.flatten(['client/specs/e2e/app/directives', this.path]).join('/');
-  var unitDirs = this.unitDirs = this._.flatten(['client/specs/unit/app/directives', this.path]).join('/');
+  var directiveDirs = this.directiveDirs = this._.flatten(['client/src', this.moduleName]).join('/');
+  var e2eDirs = this.e2eDirs = this._.flatten(['client/test/e2e', this.moduleName]).join('/');
+  var unitDirs = this.unitDirs = this._.flatten(['client/test/unit', this.moduleName]).join('/');
+  var templateDirs = this.templateDirs = this._.flatten(['client/assets/templates', this.moduleName]).join('/');
 
   this.mkdir(directiveDirs);
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
+  this.mkdir(templateDirs);
 
   console.log('Created the needed directories.');
-}
-
-ClientDirectiveGenerator.prototype.module = function module() {
-  var modulePath = this._.flatten(['directives', this.path]).join('/');
-
-  this.module = [addTrailingSlash(this, modulePath), this.name, '.directive'].join('');
-
-  console.log('RequireJS module name compiled.');
 }
 
 ClientDirectiveGenerator.prototype.files = function files() {
@@ -59,6 +66,19 @@ ClientDirectiveGenerator.prototype.files = function files() {
   console.log('Unit spec created.');
 
   var directivePathAndName = [addTrailingSlash(this, this.directiveDirs), this.name, '.directive.js'].join('');
-  this.template('_directive.js', directivePathAndName);
+  
+  if (this.hasController.toLowerCase() === 'yes') {
+    this.template('_directive.controller.js', directivePathAndName); 
+  }
+  else {
+    this.template('_directive.link.js', directivePathAndName);
+  }
+
   console.log('Directive created.');
+
+  var templatePathAndName = [addTrailingSlash(this, this.templateDirs), this.name, '.html'].join('');
+  this.template('_directive.template.html', templatePathAndName);
+  console.log('Directive template created.');
+
+  console.log('Do not forget to register your new directive within index.html and your Grunt build!!');
 };
