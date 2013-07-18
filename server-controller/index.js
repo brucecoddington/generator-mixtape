@@ -36,7 +36,7 @@ ServerControllerGenerator.prototype.files = function files() {
   this.template('_spec.js', specPathAndName);
   console.log('Mocha spec created.');
 
-  var controllerPathAndName = [addTrailingSlash(this, this.controllerDirs), this.name, '_controller.js'].join('');
+  var controllerPathAndName = [addTrailingSlash(this, this.controllerDirs), this.name, '.js'].join('');
   this.template('_controller.js', controllerPathAndName);
   console.log('Locomotive Controller created.');
 };

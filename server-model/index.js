@@ -36,7 +36,7 @@ ServerModelGenerator.prototype.files = function files() {
   this.template('_spec.js', specPathAndName);
   console.log('Mocha spec created.');
 
-  var controllerPathAndName = [addTrailingSlash(this, this.modelDirs), this.name, '.js'].join('');
-  this.template('_model.js', controllerPathAndName);
+  var modelPathAndName = [addTrailingSlash(this, this.modelDirs), this.name, '.js'].join('');
+  this.template('_model.js', modelPathAndName);
   console.log('Mongoose schema created.');
 };
