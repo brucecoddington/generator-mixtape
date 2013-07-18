@@ -1,4 +1,4 @@
-# Generator-mixtape
+# generator-mixtape
 [![Build Status](https://secure.travis-ci.org/brucecoddington/generator-mixtape.png?branch=master)](https://travis-ci.org/brucecoddington/generator-mixtape)
 
 A generator for Yeoman.
