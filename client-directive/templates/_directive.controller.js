@@ -3,19 +3,13 @@
 
   var logger = window.debug;
 
-  var <%= name %>Controller = function ($scope, $element) {
-    $element.bind('click', function () {
-      console.log('Turn up the volume.');
-    });
-  };
-
   logger.debug("Registering <%= moduleName %>.directives");
 
   angular.module('<%= moduleName %>.directives', [])
     .directive('<%= name %>', 
       function () {
         return {
-          controller: <%= name %>Controller,
+          controller: '<%= name %>Controller',
           replace: true,
           transclude: true,
           restrict: 'A',

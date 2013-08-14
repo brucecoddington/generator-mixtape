@@ -6,7 +6,6 @@ locomotive.boot('./', process.env.NODE_ENV, function (err, app) {
     }
 
     console.log('process env : ' + process.env.NODE_ENV);
-    console.log('locomotive : ' + locomotive);
     console.log('app.settings.port: ' + app.settings.port);
     console.log('app.settings.env: ' + app.settings.env);
 

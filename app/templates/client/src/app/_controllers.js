@@ -28,7 +28,6 @@
       }
     ]);
 
-    logger.debug('Registered app.HomeController');
-    logger.debug('Registered app.NavController');
+    logger.debug('Registered app.controllers');
 
 }());

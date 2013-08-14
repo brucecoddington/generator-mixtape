@@ -31,43 +31,33 @@ ClientModuleGenerator.prototype.directories = function directories() {
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
   this.mkdir(templateDirs);
-
-  console.log('Created the mdule directories.');
 }
 
 ClientModuleGenerator.prototype.files = function files() {
   var dirE2eSpecPathAndName = [addTrailingSlash(this, this.e2eDirs), 'directives.e2e.spec.js'].join('');
   this.template('_directives.e2e.spec.js', dirE2eSpecPathAndName);
-  console.log('End to end specification for the directives created.');
 
   var dirUnitSpecPathAndName = [addTrailingSlash(this, this.unitDirs), 'directives.spec.js'].join('');
   this.template('_directives.spec.js', dirUnitSpecPathAndName);
-  console.log('Unit spec for the directives created.');
 
   var directivePathAndName = [addTrailingSlash(this, this.moduleDirs), 'directives.js'].join('');
   this.template('_directives.js', directivePathAndName);
 
-  console.log('Directives module created.');
-
-  var templatePathAndName = [addTrailingSlash(this, this.templateDirs), 'clickableTitle.html'].join('');
+  var templatePathAndName = [addTrailingSlash(this, this.templateDirs), 'sampleDirective.html'].join('');
   this.template('_directive.tmpl.html', templatePathAndName);
-  console.log('Directive template created.');
 
   var e2eSpecPathAndName = [addTrailingSlash(this, this.e2eDirs), 'controllers.e2e.spec.js'].join('');
   this.template('_controllers.e2e.spec.js', e2eSpecPathAndName);
-  console.log('End to end specification for the controllers created.');
 
   var unitSpecPathAndName = [addTrailingSlash(this, this.unitDirs), 'controllers.spec.js'].join('');
   this.template('_controllers.spec.js', unitSpecPathAndName);
-  console.log('Unit spec for controllers created.');
 
   var controllerPathAndName = [addTrailingSlash(this, this.moduleDirs), 'controllers.js'].join('');
   this.template('_controllers.js', controllerPathAndName);
-  console.log('Controllers module created.');
 
   var modulePathAndName = [addTrailingSlash(this, this.moduleDirs), this.name, '.js'].join('');
   this.template('_theModule.js', modulePathAndName);
-  console.log('Module created. ')
 
-  console.log('Do not forget to register your new module JS files within index.html and your Grunt build so they are loaded into the browser!!');
+  var indexPathAndName = [addTrailingSlash(this, this.templateDirs), 'index.html'].join('');
+  this.template('_theModules.html', indexPathAndName);
 };

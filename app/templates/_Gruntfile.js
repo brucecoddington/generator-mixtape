@@ -7,9 +7,13 @@ module.exports = function (grunt) {
     grunt.initConfig ({
         pkg : grunt.file.readJSON('package.json'),
 
+        clientDistDir: 'client/dist',
+        assetsDir: 'client/assets',
+        componentDir: '<%= assetsDir %>/js/components',
+
         // The clean task ensures all files are removed from the dist/ directory so
         // that no files linger from previous builds.
-        clean: ["client/dist", "client/docs", "client/test-reports"],
+        clean: ["dist", "<%= clientDistDir %>", "client/docs", "client/test-reports"],
 
         // The jshint option for scripturl is set to lax, because the anchor
         // override inside main.js needs to test for them so as to not accidentally
@@ -44,44 +48,48 @@ module.exports = function (grunt) {
         // shim and the templates into the application code.  
         concat:{
             dist : {
+
                 src : [
                     // jquery and plugins
-                    'client/assets/js/components/modernizr/modernizr.js',
-                    'client/assets/js/components/jquery/jquery.js',
+                    '<%= componentDir %>/respond.js/respond.min.js',
+                    '<%= componentDir %>/modernizr/modernizr.js',
+                    '<%= componentDir %>/jquery/jquery.js',
 
                     // bootstrap
-                    'client/assets/js/components/bootstrap/docs/assets/js/bootstrap.js',
-                    'client/assets/js/components/bootstrap-datepicker/js/bootstrap-datepicker.js',
-                    'client/assets/js/components/bootstrap-timepicker/js/bootstrap-timepicker.js',
+                    '<%= componentDir %>/bootstrap/dist/js/bootstrap.js',
+                    '<%= componentDir %>/bootstrap-datepicker/js/bootstrap-datepicker.js',
+                    '<%= componentDir %>/bootstrap-timepicker/js/bootstrap-timepicker.js',
                     
 
                     // AngularJS libraries
-                    'client/assets/js/components/angular/build/angular.js',
-                    'client/assets/js/components/angular/build/angular-resource.js',
-                    'client/assets/js/components/angular/build/angular-cookies.js',
-                    'client/assets/js/components/angular-strap/dist/angular-strap.js',
+                    '<%= componentDir %>/angular/build/angular.js',
+                    '<%= componentDir %>/angular/build/angular-resource.js',
+                    '<%= componentDir %>/angular/build/angular-cookies.js',
+                    '<%= componentDir %>/angular-strap/dist/angular-strap.js',
+
+                    //AngularJS Library Dependencies
+                    '<%= componentDir %>/bootstrap-select/bootstrap-select.js',
+                    '<%= componentDir %>/angular-strap/vendor/bootstrap-datepicker.js',
 
                     // Angular UI libraries
-                    'client/assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-0.4.0.js',
-                    'client/assets/js/components/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.4.0.js',
+                    '<%= componentDir %>/angular-ui-bootstrap/dist/ui-bootstrap-0.4.0.js',
+                    '<%= componentDir %>/angular-ui-bootstrap/dist/ui-bootstrap-tpls-0.4.0.js',
+                    '<%= componentDir %>/angular-ui-router/release/angular-ui-router.js',
                     
                     // logger
-                    'client/assets/js/components/javascript-debug/ba-debug.js',
+                    '<%= componentDir %>/javascript-debug/ba-debug.js',
 
                     // utilities
-                    'client/assets/js/components/lodash/dist/lodash.js',
-                    'client/assets/js/components/moment.js',
+                    '<%= componentDir %>/lodash/dist/lodash.js',
+                    '<%= componentDir %>/moment/moment.js',
+                    '<%= componentDir %>/add-to-homescreen/src/add2home.js',
+                    '<%= componentDir %>/responsive-tables/responsive-tables.js',
 
-                    // application files
-                    'client/src/directives/directives.js',
-                    'client/src/filters/filters.js',
-                    'client/src/app/controllers.js',
-                    'client/src/app/directives.js',
-                    'client/src/app/app.js',
-                    'client/src/main.js'
+                    'client/src/**/*.js'
 
                 ],
-                dest: "client/dist/debug/app.js"
+                
+                dest: "<%= clientDistDir %>/debug/app.js"
             }
         },
 
@@ -89,13 +97,25 @@ module.exports = function (grunt) {
         // order and concatenate them into a single CSS file named style.css.  It
         // also minifies all the CSS as well.  This is named style.css, because we
         // only want to load one stylesheet in index.html.
-        cssmin :{ 
+        cssmin : { 
             combine : {
                 files : {
-                    "client/dist/assets/css/style.css":[
-                      "client/dist/assets/css/style.css"
+                    "<%= clientDistDir %>/assets/css/style.css":[
+                      "<%= clientDistDir %>/assets/css/style.css"
                     ]   
                 }
+            }
+        },
+
+        ngtemplates:  {
+            dist:      {
+                options:  {
+                    base: 'client',
+                    concat: 'dist',       //Appends the template file to the concat task
+                    module: 'main'
+                },
+                src:      'client/assets/templates/**/*.html',
+                dest:     'client/dist/assets/templates/templates.js'
             }
         },
 
@@ -103,7 +123,7 @@ module.exports = function (grunt) {
         uglify : {
             dist : {
                 files: {
-                    "client/dist/release/app.js" : ["client/dist/debug/app.js"]
+                    "<%= clientDistDir %>/release/app.js" : ["<%= clientDistDir %>/debug/app.js"]
                 }
             }
         },
@@ -117,7 +137,7 @@ module.exports = function (grunt) {
                 files: [
                     'client/src/**/*.js', 
                     'client/test/**/*.js',
-                    'client/assets/templates/**/*.html'
+                    '<%= assetsDir %>/templates/**/*.html'
                 ],
                 tasks: ['assemble', 'karma:unit:run', 'karma:e2e:run']
             },
@@ -131,7 +151,7 @@ module.exports = function (grunt) {
             views : {
                 files: [
                     'app/views/**/*.jade',
-                    'client/assets/less/**/*.less'
+                    '<%= assetsDir %>/less/**/*.less'
                 ],
                 tasks: ['assemble']
             }
@@ -141,10 +161,10 @@ module.exports = function (grunt) {
         less:{
             app:{
                 options: {
-                    paths: ["client/assets/less"]
+                    paths: ["<%= assetsDir %>/less"]
                 },
                 files : {
-                    'client/dist/assets/css/style.css': 'client/assets/less/style.less'
+                    '<%= clientDistDir %>/assets/css/style.css': '<%= assetsDir %>/less/style.less'
                 }
             }
         },
@@ -152,17 +172,17 @@ module.exports = function (grunt) {
         // Start the Karma test runner for the client tests. 
         karma : {
             unit : {
+                reporters: 'dots',
                 configFile: 'karma.unit.config.js',
                 options: {
-                    reporters: 'dots',
                     background: true
                 }
             },
 
             e2e : {
+                reporters: 'dots',
                 configFile: 'karma.e2e.config.js',
                 options : {
-                    reporters: 'dots',
                     port: 9877,
                     runnerPort: 9101,
                     background: true
@@ -189,46 +209,46 @@ module.exports = function (grunt) {
 
         copy: {
             vendor : {
-                files: [{expand: true, cwd: 'client/assets/css', src:['**'], dest:'client/dist/assets/css'}]
+                files: [{expand: true, cwd: '<%= assetsDir %>/css', src:['**'], dest:'<%= clientDistDir %>/assets/css'}]
             },
             release : {
                 files: [
                     {expand: true, 
-                        cwd: 'client/assets', 
+                        cwd: '<%= assetsDir %>', 
                         src:['img/**', 'templates/**', 'font/**'], 
-                        dest: 'client/dist/<%= pkg.name %>/assets'},
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>/assets'},
                     {expand: true, 
-                        cwd: 'client/dist/release', 
+                        cwd: '<%= clientDistDir %>/release', 
                         src:['app.min.js'], 
-                        dest:'client/dist/<%= pkg.name %>/app'},
+                        dest:'<%= clientDistDir %>/<%= pkg.name %>/app'},
                     {expand: true, 
-                        cwd: 'client/dist/assets/css', 
+                        cwd: '<%= clientDistDir %>/assets/css', 
                         src:['**'], 
-                        dest: 'client/dist/<%= pkg.name %>/assets/css'},
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>/assets/css'},
                     {expand: true, 
-                        cwd: 'client/dist/release', 
+                        cwd: '<%= clientDistDir %>/release', 
                         src:['index.html'], 
-                        dest: 'client/dist/<%= pkg.name %>'}
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>'}
                 ]
             },
             debug : {
                 files: [
                     {expand: true, 
-                        cwd: 'client/dist/debug', 
+                        cwd: '<%= clientDistDir %>/debug', 
                         src:['app.js'], 
-                        dest: 'client/dist/<%= pkg.name %>-debug/app'},
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>-debug/app'},
                     {expand: true, 
-                        cwd: 'client/assets', 
+                        cwd: '<%= assetsDir %>', 
                         src: ['img/**', 'templates/**', 'font/**'], 
-                        dest: 'client/dist/<%= pkg.name %>-debug/assets'},
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>-debug/assets'},
                     {expand: true, 
-                        cwd: 'client/dist/assets/css', 
+                        cwd: '<%= clientDistDir %>/assets/css', 
                         src: ['**'], 
-                        dest: 'client/dist/<%= pkg.name %>-debug/assets/css'},
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>-debug/assets/css'},
                     {expand: true, 
                         cwd: 'client', 
                         src: ['*'], 
-                        dest: 'client/dist/<%= pkg.name %>-debug', 
+                        dest: '<%= clientDistDir %>/<%= pkg.name %>-debug', 
                         filter: 'isFile'}
                 ]
             }
@@ -256,30 +276,39 @@ module.exports = function (grunt) {
                     }
                 }, 
                 files: {
-                    'client/dist/release/index.html': ['app/views/application/index.jade']
+                    '<%= clientDistDir %>/release/index.html': ['app/views/application/index.jade']
                 }
             }
         },
 
         // The **docco** task iterates through the `src` files and creates annotated source reports for them.
         docco: {
+            options: {
+                layout : "parallel"
+            },
             client: {
-                src: "client/src/**/*.js",
-                dest: "client/docs/client"
+                options: {
+                    output : "dist/docs/client/"
+                },
+                src: "client/src/**/*.js"
             },
-
+            app: {
+                options: {
+                    output : "dist/docs/app/"
+                },
+                src: "app/**/*.js"
+            },
             grunt: {
-                src: "Gruntfile.js",
-                dest: "client/docs/grunt"
+                options: {
+                    output : "dist/docs/docs/grunt/"
+                },
+                src: "Gruntfile.js"
             }, 
-
             config: {
-                src: "config/**/*.js", 
-                dest: "client/docs/config"
-            },
-            app : {
-                src: "app/**/*.js",
-                dest: "client/docs/app"
+                options: {
+                    output : "dist/docs/config/"
+                },
+                src: "config/**/*.js"
             }
         },
 
@@ -298,7 +327,10 @@ module.exports = function (grunt) {
             },
 
             test : {
-                env: 'test'
+                options: {
+                    dieWithParent: true
+                },
+                env: 'development'
             }
         },
 
@@ -309,6 +341,13 @@ module.exports = function (grunt) {
         }, 
 
         shell : {
+            bowerInstall : {
+                options: {
+                    stdout: true,
+                    stderr: true
+                },
+                command: 'bower install'
+            },
             startup : {
                 options: {
                     stdout: true,
@@ -325,7 +364,7 @@ module.exports = function (grunt) {
                     stdout: true,
                     stderr: true,
                     execOptions: {
-                        cwd: 'client/assets/js/components/angular'
+                        cwd: '<%= assetsDir %>/js/components/angular'
                     }
                 },
                 command: 'npm install'
@@ -335,7 +374,7 @@ module.exports = function (grunt) {
                     stdout: true,
                     stderr: true,
                     execOptions: {
-                        cwd: 'client/assets/js/components/angular-ui-bootstrap'
+                        cwd: '<%= assetsDir %>/js/components/angular-ui-bootstrap'
                     }
                 },
                 command: 'npm install'
@@ -344,11 +383,11 @@ module.exports = function (grunt) {
 
         hub: {
             angular: {
-                src: ['client/assets/js/components/angular/Gruntfile.js'],
+                src: ['<%= assetsDir %>/js/components/angular/Gruntfile.js'],
                 tasks: ['package']
             }, 
             angularui: {
-                src: ['client/assets/js/components/angular-ui-bootstrap/Gruntfile.js'],
+                src: ['<%= assetsDir %>/js/components/angular-ui-bootstrap/Gruntfile.js'],
                 tasks: ['build']
             }
         }
@@ -356,9 +395,6 @@ module.exports = function (grunt) {
     });
 
     // *********************************************************************************************
-
-    // Load the necessary tasks
-    grunt.loadTasks("grunt_tasks");
 
     grunt.loadNpmTasks('grunt-hub');
     grunt.loadNpmTasks("grunt-contrib-concat");
@@ -370,19 +406,21 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-mixtape-run-app');
     grunt.loadNpmTasks("grunt-karma");
     grunt.loadNpmTasks("grunt-shell");
     grunt.loadNpmTasks("grunt-mocha-cli");
+    grunt.loadNpmTasks('grunt-docco-multi');
 
     // **********************************************************************************************
 
     //Initialize a fresh project.  This will build any dependencies and run the default grunt task.
-    grunt.registerTask("init", ['builddeps', 'assemble']);
+    grunt.registerTask("init", ['shell:bowerInstall', 'builddeps', 'assemble']);
 
     //Build dependencies of the project
     grunt.registerTask("builddeps", ['angular']);
 
-    //Build angular.js
+    //Build angular.js and angular-ui
     grunt.registerTask("angular", ['shell:angular', 'shell:angularui', 'hub:angular', 'hub:angularui']);
     
     // The default task will remove all contents inside the dist/ folder, lint
@@ -395,10 +433,10 @@ module.exports = function (grunt) {
 
     // Forks off the application server and runs the unit and e2e tests.
     // Test results stored in client/test-reports
-    grunt.registerTask("test", ['assemble', 'runappci', 'karma:unitci', 'karma:e2eci']);
+    grunt.registerTask("test", ['assemble', 'runapp:test', 'karma:unitci', 'karma:e2eci']);
 
     // Task to package everything up for deployment
-    grunt.registerTask("assemble", ['default', 'concat', 'uglify', 'copy:vendor', 'copy:debug', 'copy:release']);
+    grunt.registerTask("assemble", ['default', 'concat', 'uglify', 'copy:vendor', 'copy:debug', 'copy:release', 'docco']);
 
     // Task to kickoff the grunt build for development 
     // This will start both Karma test runners (unit, e2e) and the 'watch' task.

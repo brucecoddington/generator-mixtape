@@ -52,6 +52,7 @@ MixtapeGenerator.prototype.app = function app() {
   this.template('app/views/application/_index.jade', 'app/views/application/index.jade');
   
   this.mkdir('app/views/templates');
+  this.template('app/views/templates/_scripts.jade', 'app/views/templates/scripts.jade');
   
   cb();
 };
@@ -92,14 +93,6 @@ MixtapeGenerator.prototype.configGen = function configGen() {
 
   this.directory('config/initializers', 'config/intitializers');
 
-  cb();
-};
-
-MixtapeGenerator.prototype.gruntTasks = function gruntTasks() {
-  var cb = this.async();
-  
-  this.directory('grunt_tasks', 'grunt_tasks');  
-  
   cb();
 };
 
