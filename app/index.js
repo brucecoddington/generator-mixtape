@@ -64,7 +64,7 @@ MixtapeGenerator.prototype.projectfiles = function projectfiles() {
   this.template('_bower.json', 'bower.json');
   this.template('_bowerrc', '.bowerrc');
   this.template('_gitignore', '.gitignore');
-  this.template('_Gruntfile.js', 'Gruntfile.js');
+  this.copy('Gruntfile.js', 'Gruntfile.js');
   this.template('_karma.unit.config.js', 'karma.unit.config.js');
   this.template('_karma.e2e.config.js', 'karma.e2e.config.js');
   this.template('_karma.ci.unit.config.js', 'karma.ci.unit.config.js');

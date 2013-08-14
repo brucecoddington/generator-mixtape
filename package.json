@@ -1,6 +1,6 @@
 {
   "name": "generator-mixtape",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Yeoman generator for my favorite Javascript frameworks compiled into a mixtape.",
   "keywords": [
     "yeoman-generator"

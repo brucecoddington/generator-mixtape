@@ -59,5 +59,5 @@ ClientModuleGenerator.prototype.files = function files() {
   this.template('_theModule.js', modulePathAndName);
 
   var indexPathAndName = [addTrailingSlash(this, this.templateDirs), 'index.html'].join('');
-  this.template('_theModules.html', indexPathAndName);
+  this.template('_theModule.html', indexPathAndName);
 };
