@@ -1,17 +1,18 @@
 module.exports = function(config) {
-    config.set({
-        frameworks: ['mocha'],
+  config.set({
+    frameworks: ['jasmine'],
 
-        files: [
-          '../node_modules/chai/chai.js',
-          '../node_modules/sinon/lib/sinon.js',
+    files: [
+      '../node_modules/chai/chai.js',
+      '../node_modules/sinon/lib/sinon.js',
 
-        'dist/debug/app.js',
-        'assets/js/components/angular/build/angular-mocks.js',
-        
-        'test/unit/**/*.spec.js', 
+      'dist/assets/js/app.js',
+      'assets/js/components/angular-mocks/angular-mocks.js',
+      'test/util/state.mock.js',
+      
+      'test/unit/**/*.spec.js',
 
-        'assets/templates/**/*.html'
+      'assets/templates/**/*.html'
     ],
 
     basePath : 'client',
@@ -21,8 +22,14 @@ module.exports = function(config) {
       'assets/templates/**/*.html': 'html2js'
     },
 
-        browsers: ['Chrome', 'Firefox'],
+    browsers: ['Chrome', 'Firefox'],
 
-        plugins: ['karma-mocha', 'karma-chrome-launcher', 'karma-firefox-launcher', 'karma-ng-html2js-preprocessor']
-    });
+    plugins: [
+      'karma-jasmine', 
+      'karma-chrome-launcher', 
+      'karma-firefox-launcher', 
+      'karma-ng-html2js-preprocessor'
+    ]
+
+  });
 };

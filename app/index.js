@@ -3,13 +3,12 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 
-
 var MixtapeGenerator = module.exports = function MixtapeGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
 
   this.on('end', function () {
-    this.installDependencies({ 
-      skipInstall: options['skip-install'] 
+    this.installDependencies({
+      skipInstall: options['skip-install']
     });
   });
 
@@ -36,27 +35,6 @@ MixtapeGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-MixtapeGenerator.prototype.app = function app() {
-  var cb = this.async();
-
-  // generate server application dirs
-  this.mkdir('app');
-  this.mkdir('app/controllers');
-  this.template('app/controllers/_application_controller.js', 'app/controllers/application_controller.js');
-
-  this.mkdir('app/models');
-  this.mkdir('app/services');
-  
-  this.mkdir('app/views');
-  this.mkdir('app/views/application');
-  this.template('app/views/application/_index.jade', 'app/views/application/index.jade');
-  
-  this.mkdir('app/views/templates');
-  this.template('app/views/templates/_scripts.jade', 'app/views/templates/scripts.jade');
-  
-  cb();
-};
-
 MixtapeGenerator.prototype.projectfiles = function projectfiles() {
   var cb = this.async();
   
@@ -71,7 +49,27 @@ MixtapeGenerator.prototype.projectfiles = function projectfiles() {
   this.template('_karma.ci.e2e.config.js', 'karma.ci.e2e.config.js');
   this.template('_nodemonignore', '.nodemonignore');
   this.template('_readme.md', 'README.md');
-  this.copy('server.js', 'server.js');  
+  this.copy('server.js', 'server.js');
+  
+  cb();
+};
+
+MixtapeGenerator.prototype.app = function app() {
+  var cb = this.async();
+
+  // generate server application dirs
+  this.directory('app', 'app');
+  this.directory('data', 'data');
+  this.directory('test', 'test');
+  
+  cb();
+};
+
+MixtapeGenerator.prototype.client = function client() {
+  var cb = this.async();
+  
+  // generate client application dirs
+  this.directory('client', 'client');
   
   cb();
 };
@@ -83,71 +81,9 @@ MixtapeGenerator.prototype.configGen = function configGen() {
   this.template('config/_properties.js', 'config/properties.js');
   this.copy('config/routes.js', 'config/routes.js');
 
-  this.directory('config/bootstrap', 'config/bootstrap');
-
-  this.mkdir('config/environments');
-  this.template('config/environments/_all.js', 'config/environments/all.js');
-  this.template('config/environments/_debug.js', 'config/environments/debug.js');
-  this.template('config/environments/_development.js', 'config/environments/development.js');
-  this.template('config/environments/_production.js', 'config/environments/production.js');
-
+  this.directory('config/cert', 'config/cert');
+  this.directory('config/environments', 'config/environments');
   this.directory('config/initializers', 'config/intitializers');
 
   cb();
-};
-
-MixtapeGenerator.prototype.serverSpecs = function serverSpecs() {
-  var cb = this.async();
-  
-  this.directory('test', 'test');  
-  
-  cb();
-};
-
-MixtapeGenerator.prototype.client = function client() {
-  var cb = this.async();
-  
-  // generate client application dirs
-  this.mkdir('client');
-
-  this.mkdir('client/src');
-  this.template('client/src/_main.js', 'client/src/main.js');
-
-  this.mkdir('client/src/filters');
-  this.template('client/src/filters/_filters.js', 'client/src/filters/filters.js');
-
-  this.mkdir('client/src/services');
-  this.template('client/src/services/_services.js', 'client/src/services/services.js');
-  this.mkdir('client/dist');  
-
-  // Add the Tests
-  this.directory('client/test', 'client/test');
-  
-  cb();
-};
-
-MixtapeGenerator.prototype.appModule = function appModule() {
-  var cb = this.async();
-
-  this.mkdir('client/src/app');
-  this.template('client/src/app/_app.js', 'client/src/app/app.js');
-  this.template('client/src/app/_controllers.js', 'client/src/app/controllers.js');
-  this.template('client/src/app/_directives.js', 'client/src/app/directives.js');
-
-  cb();
-}
-
-MixtapeGenerator.prototype.assets = function assets() {
-  var cb = this.async();
-  
-  // client assets directories
-  this.mkdir('client/assets');
-  this.mkdir('client/assets/css');
-  this.mkdir('client/assets/font');
-  this.directory('client/assets/img', 'client/assets/img');
-  this.directory('client/assets/templates', 'client/assets/templates');
-  this.directory('client/assets/js', 'client/assets/js'); 
-  this.directory('client/assets/less', 'client/assets/less');
-
-  cb(); 
 };
