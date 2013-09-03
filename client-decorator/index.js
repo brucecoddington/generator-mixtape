@@ -3,17 +3,17 @@ var util = require('util');
 var yeoman = require('yeoman-generator');
 var pathUtils = require('../helpers/path-utils.js');
 
-var ClientControllerGenerator = module.exports = function ClientControllerGenerator(args, options, config) {
+var ClientDecoratorGenerator = module.exports = function ClientDecoratorGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call
   // as `this.name`.
   yeoman.generators.NamedBase.apply(this, arguments);
 
-  console.log('Creating the ' + this.name + ' controller and its specs...');
+  console.log('You called the clientDecorator subgenerator with the argument ' + this.name + '.');
 };
 
-util.inherits(ClientControllerGenerator, yeoman.generators.NamedBase);
+util.inherits(ClientDecoratorGenerator, yeoman.generators.NamedBase);
 
-ClientControllerGenerator.prototype.askFor = function askFor() {
+ClientDecoratorGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
 
   // have Yeoman greet the user.
@@ -31,7 +31,7 @@ ClientControllerGenerator.prototype.askFor = function askFor() {
   }.bind(this));
 };
 
-ClientControllerGenerator.prototype.directories = function directories() {
+ClientDecoratorGenerator.prototype.directories = function directories() {
   var moduleName = this.moduleName;
   var controllerDirs = this.controllerDirs = pathUtils.directoryPath('client/src', moduleName);
   var e2eDirs = this.e2eDirs = pathUtils.directoryPath('client/test/e2e', moduleName);
@@ -44,7 +44,7 @@ ClientControllerGenerator.prototype.directories = function directories() {
   console.log('Created the needed directories.');
 };
 
-ClientControllerGenerator.prototype.files = function files() {
+ClientDecoratorGenerator.prototype.files = function files() {
   var name = this.name;
 
   var e2eSpecPathAndName = pathUtils.pathAndName(this.e2eDirs, name, '.e2e.spec.js');

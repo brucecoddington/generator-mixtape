@@ -5,7 +5,7 @@
   logger.debug("Registering <%= moduleName %>.directives");
 
   angular.module('<%= moduleName %>.directives', [])
-    .directive('<%= name %>', 
+    .directive('<%= name %>',
       function () {
         return {
           link: function (scope, element, attrs, controller) {
@@ -16,6 +16,7 @@
           restrict: 'A',
           //require : '???', // add a parent if needed 
           scope: {},
+          controller: '<%= name %>Controller',
           templateUrl: 'assets/templates/<%= moduleName %>/<%= name %>.html'
         };
       }

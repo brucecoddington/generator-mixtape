@@ -1,7 +1,8 @@
 (function () {
   'use strict';
+  var expect = chai.expect;
 
-  describe('<%= moduleName %>.filters', function () {
+  describe('<%= moduleName %>.decorators', function () {
 
     beforeEach (function () {
       browser().navigateTo("/");

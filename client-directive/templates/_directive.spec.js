@@ -1,42 +1,42 @@
 (function (){
-    'use strict';
+  'use strict';
 
-    var expect = chai.expect;
+  var expect = chai.expect;
 
-    describe('<%= moduleName %>.directives', function() {
+  describe('<%= moduleName %>.directives', function() {
 
-        describe('<%= _.capitalize(name) %>', function () {
+    describe('<%= name %>', function () {
 
-            var appDirectives, scope, elm;
+      var appDirectives, scope, elm;
 
-            beforeEach(function () {
-                angular.mock.module('<%= moduleName %>.directives');
-            });
+      beforeEach(function () {
+        angular.mock.module('<%= moduleName %>.directives');
+      });
 
-            beforeEach(module( 'assets/templates/<%= moduleName %>/<%= name %>.html'));
-            
-            beforeEach(function () {
-                
-                inject(function($rootScope, $compile){
-                    scope = $rootScope.$new();
+      beforeEach(module( 'assets/templates/<%= moduleName %>/<%= name %>.html'));
 
-                    elm = angular.element(
-                        '<div class="container">' + 
-                            '<div <%= _.slugify(name) %>>This is a test</div>' +
-                        '</div>');
+      beforeEach(function () {
 
-                    $compile(elm)(scope);
-                    scope.$digest();
-                });
-            });
+        inject(function($rootScope, $compile){
+          scope = $rootScope.$new();
 
-            it('should replace the text with the template', function() {
-                var container = elm.find('div');
+          elm = angular.element(
+            '<div class="container">' + 
+              '<div <%= _.slugify(name) %>>This is a test</div>' +
+            '</div>');
 
-                expect(container.text()).to.equal('This is a test.');
-            });
-
+          $compile(elm)(scope);
+          scope.$digest();
         });
+      });
+
+      it('should replace the text with the template', function() {
+        var container = elm.find('div');
+
+        expect(container.text()).to.equal('This is a test.');
+      });
 
     });
+
+  });
 }());

@@ -3,11 +3,13 @@
 
   var logger = window.debug;
 
-  angular.module('filters').
-    filter('<%= name %>', [
+  angular.module('<%= moduleName %>.filters')
+    .filter('<%= name %>', [
         '$DEP',
         function ($DEP) {
-          return function (){};
+          return function (){
+            
+          };
         }
       ]);
 

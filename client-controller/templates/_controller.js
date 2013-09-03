@@ -6,11 +6,11 @@
   angular.module('<%= moduleName %>.controllers', []).
     controller('<%= _.capitalize(name) %>Controller', [
       '$scope',
-      function ($scope){
+      function ($scope) {
          
       }
     ]);
 
-    logger.debug('Registered <%= moduleName %>.<%= _.capitalize(name) %>Controller');
+  logger.debug('Registered <%= moduleName %>.<%= _.capitalize(name) %>Controller');
 
 }());

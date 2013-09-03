@@ -1,14 +1,7 @@
 'use strict';
 var util = require('util');
 var yeoman = require('yeoman-generator');
-
-var addTrailingSlash = function addTrailingSlash(task, path) {
-  if (!task._.endsWith(path, '/')) {
-    path += "/";
-  }
-
-  return path; 
-};
+var pathUtils = require('../helpers/path-utils.js');
 
 var ClientDirectiveGenerator = module.exports = function ClientDirectiveGenerator(args, options, config) {
   // By calling `NamedBase` here, we get the argument to the subgenerator call

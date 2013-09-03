@@ -2,11 +2,11 @@
 	'use strict';
 
 	var logger = window.debug;
-	logger.group("Registering <%= _.capitalize(name) %> module");
+	logger.group("Registering <%= name %> module");
 
 	var app = angular.module('<%= name %>', [
-    '<%= name %>.directives', 
-    '<%= name %>.controllers'
+    '<%= name %>.directives',
+    '<%= name %>.controllers',
     'ui.state'
   ]);
 
@@ -23,6 +23,5 @@
   }]);
 
 	logger.debug("<%= name %> module bootstrapped.");
-	logger.groupEnd(); 
-
+	logger.groupEnd();
 }());
