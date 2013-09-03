@@ -22,21 +22,27 @@ ClientDirectiveGenerator.prototype.askFor = function askFor() {
   var prompts = [{
     name: 'moduleName',
     message: 'What module will this directive be namespaced to?'
+  },
+  {
+    name: 'directoryPath',
+    message: 'What directory will contain this directive?',
+    default: ''
   }];
 
   this.prompt(prompts, function (props) {
     this.moduleName = props.moduleName;
+    this.directoryPath = props.directoryPath;
 
     cb();
   }.bind(this));
 };
 
 ClientDirectiveGenerator.prototype.directories = function directories() {
-  var moduleName = this.moduleName;
-  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(moduleName);
-  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(moduleName);
-  var unitDirs = this.unitDirs = pathUtils.unitDirectory(moduleName);
-  var templateDirs = this.templateDirs = pathUtils.templateDirectory(moduleName);
+  var directoryPath = this.directoryPath;
+  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(directoryPath);
+  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(directoryPath);
+  var unitDirs = this.unitDirs = pathUtils.unitDirectory(directoryPath);
+  var templateDirs = this.templateDirs = pathUtils.templateDirectory(directoryPath);
 
   this.mkdir(moduleDirs);
   this.mkdir(e2eDirs);
@@ -49,15 +55,8 @@ ClientDirectiveGenerator.prototype.directories = function directories() {
 ClientDirectiveGenerator.prototype.files = function files() {
   var name = this.name;
 
-  var e2eSpec = pathUtils.scenarioFile(this.e2eDirs, name);
-  this.template('_directive.e2e.spec.js', e2eSpec);
-
-  var unitSpec = pathUtils.specFile(this.unitDirs, name);
-  this.template('_directive.spec.js', unitSpec);
-
-  var directive = pathUtils.moduleFile(this.moduleDirs, name);
-  this.template('_directive.js', directive);
-  
-  var template = pathUtils.templateFile(this.templateDirs, name);
-  this.template('_directive.template.html', template);
+  this.template('_directive.e2e.spec.js', pathUtils.scenarioFile(this.e2eDirs, name));
+  this.template('_directive.spec.js', pathUtils.specFile(this.unitDirs, name));
+  this.template('_directive.js', pathUtils.moduleFile(this.moduleDirs, name));
+  this.template('_directive.template.html', pathUtils.templateFile(this.templateDirs, name));
 };

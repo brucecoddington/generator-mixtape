@@ -22,37 +22,38 @@ ClientControllerGenerator.prototype.askFor = function askFor() {
   var prompts = [{
     name: 'moduleName',
     message: 'What module will this controller be namespaced to?'
+  },
+  {
+    name: 'directoryPath',
+    message: 'What directory will contain this controller?',
+    default: ''
   }];
 
   this.prompt(prompts, function (props) {
     this.moduleName = props.moduleName;
+    this.directoryPath = props.directoryPath;
 
     cb();
   }.bind(this));
 };
 
 ClientControllerGenerator.prototype.directories = function directories() {
-  var moduleName = this.moduleName;
-  var controllerDirs = this.controllerDirs = pathUtils.directoryPath('client/src', moduleName);
-  var e2eDirs = this.e2eDirs = pathUtils.directoryPath('client/test/e2e', moduleName);
-  var unitDirs = this.unitDirs = pathUtils.directoryPath('client/test/unit', moduleName);
-
-  this.mkdir(controllerDirs);
+  var directoryPath = this.directoryPath;
+  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(directoryPath);
+  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(directoryPath);
+  var unitDirs = this.unitDirs = pathUtils.unitDirectory(directoryPath);
+  
+  this.mkdir(moduleDirs);
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
-
+  
   console.log('Created the needed directories.');
 };
 
 ClientControllerGenerator.prototype.files = function files() {
   var name = this.name;
 
-  var e2eSpecPathAndName = pathUtils.pathAndName(this.e2eDirs, name, '.e2e.spec.js');
-  this.template('_controller.e2e.spec.js', e2eSpecPathAndName);
-
-  var unitSpecPathAndName = pathUtils.pathAndName(this.unitDirs, name, '.spec.js');
-  this.template('_controller.spec.js', unitSpecPathAndName);
-
-  var controllerPathAndName = pathUtils.pathAndName(this.controllerDirs, name, '.controller.js');
-  this.template('_controller.js', controllerPathAndName);
+  this.template('_controller.e2e.spec.js', pathUtils.scenarioFile(this.e2eDirs, name));
+  this.template('_controller.spec.js', pathUtils.specFile(this.unitDirs, name));
+  this.template('_controller.js', pathUtils.moduleFile(this.moduleDirs, name));
 };

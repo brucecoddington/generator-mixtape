@@ -16,24 +16,24 @@ var pathAndName = function pathAndName(rootPath, name, suffix) {
   return [addTrailingSlash(rootPath), name, suffix].join('');
 };
 
-var directoryPath = function directoryPath(rootPath, moduleName) {
-  return _.flatten([rootPath, patherize(moduleName)]).join('/');
+var directoryPath = function directoryPath(rootPath, directoryPath) {
+  return _.flatten([rootPath, directoryPath]).join('/');
 };
 
-var moduleDirectory = function moduleDirectory(moduleName) {
-  return directoryPath('client/src', moduleName);
+var moduleDirectory = function moduleDirectory(directoryPath) {
+  return directoryPath('client/src', directoryPath);
 };
 
-var scenarioDirectory = function scenarioDirectory(moduleName) {
-  return directoryPath('client/test/e2e', moduleName);
+var scenarioDirectory = function scenarioDirectory(directoryPath) {
+  return directoryPath('client/test/e2e', directoryPath);
 };
 
-var unitDirectory = function unitDirectory(moduleName) {
-  return directoryPath('client/test/unit', moduleName);
+var unitDirectory = function unitDirectory(directoryPath) {
+  return directoryPath('client/test/unit', directoryPath);
 };
 
-var templateDirectory = function templateDirectory(moduleName) {
-  return directoryPath('client/assets/templates', moduleName);
+var templateDirectory = function templateDirectory(directoryPath) {
+  return directoryPath('client/assets/templates', directoryPath);
 };
 
 var moduleFile = function moduleFile(directory, name) {

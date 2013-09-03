@@ -21,21 +21,27 @@ ClientDecoratorGenerator.prototype.askFor = function askFor() {
 
   var prompts = [{
     name: 'moduleName',
-    message: 'What module will this controller be namespaced to?'
+    message: 'What module will this decorator be namespaced to?'
+  },
+  {
+    name: 'directoryPath',
+    message: 'What directory will contain this decorator?',
+    default: ''
   }];
 
   this.prompt(prompts, function (props) {
     this.moduleName = props.moduleName;
+    this.directoryPath = props.directoryPath;
 
     cb();
   }.bind(this));
 };
 
 ClientDecoratorGenerator.prototype.directories = function directories() {
-  var moduleName = this.moduleName;
-  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(moduleName);
-  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(moduleName);
-  var unitDirs = this.unitDirs = pathUtils.unitDirectory(moduleName);
+  var directoryPath = this.directoryPath;
+  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(directoryPath);
+  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(directoryPath);
+  var unitDirs = this.unitDirs = pathUtils.unitDirectory(directoryPath);
   
   this.mkdir(moduleDirs);
   this.mkdir(e2eDirs);
@@ -47,12 +53,7 @@ ClientDecoratorGenerator.prototype.directories = function directories() {
 ClientDecoratorGenerator.prototype.files = function files() {
   var name = this.name;
 
-  var e2eSpec = pathUtils.scenarioFile(this.e2eDirs, name);
-  this.template('_decorator.e2e.spec.js', e2eSpec);
-
-  var unitSpec = pathUtils.specFile(this.unitDirs, name);
-  this.template('_decorator.spec.js', unitSpec);
-
-  var decorator = pathUtils.moduleFile(this.moduleDirs, name);
-  this.template('_decorator.js', decorator);
+  this.template('_decorator.e2e.spec.js', pathUtils.scenarioFile(this.e2eDirs, name));
+  this.template('_decorator.spec.js', pathUtils.specFile(this.unitDirs, name));
+  this.template('_decorator.js', pathUtils.moduleFile(this.moduleDirs, name));
 };
