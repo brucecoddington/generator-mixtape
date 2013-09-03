@@ -33,26 +33,26 @@ ClientDecoratorGenerator.prototype.askFor = function askFor() {
 
 ClientDecoratorGenerator.prototype.directories = function directories() {
   var moduleName = this.moduleName;
-  var controllerDirs = this.controllerDirs = pathUtils.directoryPath('client/src', moduleName);
-  var e2eDirs = this.e2eDirs = pathUtils.directoryPath('client/test/e2e', moduleName);
-  var unitDirs = this.unitDirs = pathUtils.directoryPath('client/test/unit', moduleName);
-
-  this.mkdir(controllerDirs);
+  var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(moduleName);
+  var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(moduleName);
+  var unitDirs = this.unitDirs = pathUtils.unitDirectory(moduleName);
+  
+  this.mkdir(moduleDirs);
   this.mkdir(e2eDirs);
   this.mkdir(unitDirs);
-
+  
   console.log('Created the needed directories.');
 };
 
 ClientDecoratorGenerator.prototype.files = function files() {
   var name = this.name;
 
-  var e2eSpecPathAndName = pathUtils.pathAndName(this.e2eDirs, name, '.e2e.spec.js');
-  this.template('_controller.e2e.spec.js', e2eSpecPathAndName);
+  var e2eSpec = pathUtils.scenarioFile(this.e2eDirs, name);
+  this.template('_decorator.e2e.spec.js', e2eSpec);
 
-  var unitSpecPathAndName = pathUtils.pathAndName(this.unitDirs, name, '.spec.js');
-  this.template('_controller.spec.js', unitSpecPathAndName);
+  var unitSpec = pathUtils.specFile(this.unitDirs, name);
+  this.template('_decorator.spec.js', unitSpec);
 
-  var controllerPathAndName = pathUtils.pathAndName(this.controllerDirs, name, '.controller.js');
-  this.template('_controller.js', controllerPathAndName);
+  var decorator = pathUtils.moduleFile(this.moduleDirs, name);
+  this.template('_decorator.js', decorator);
 };
