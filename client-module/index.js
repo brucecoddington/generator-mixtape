@@ -20,17 +20,12 @@ ClientModuleGenerator.prototype.askFor = function askFor() {
   console.log(this.yeoman);
 
   var prompts = [{
-    name: 'moduleName',
-    message: 'What module will this controller be namespaced to?'
-  },
-  {
     name: 'directoryPath',
     message: 'What directory will contain this decorator?',
     default: ''
   }];
 
   this.prompt(prompts, function (props) {
-    this.moduleName = props.moduleName;
     this.directoryPath = props.directoryPath;
 
     cb();
@@ -38,8 +33,6 @@ ClientModuleGenerator.prototype.askFor = function askFor() {
 };
 
 ClientModuleGenerator.prototype.directories = function directories() {
-  var cb = this.async();
-
   var directoryPath = this.directoryPath;
   var moduleDirs = this.moduleDirs = pathUtils.moduleDirectory(directoryPath);
   var e2eDirs = this.e2eDirs = pathUtils.scenarioDirectory(directoryPath);
@@ -52,7 +45,6 @@ ClientModuleGenerator.prototype.directories = function directories() {
   this.mkdir(templateDirs);
 
   console.log('Created the needed directories.');
-  cb();
 };
 
 ClientModuleGenerator.prototype.files = function files() {

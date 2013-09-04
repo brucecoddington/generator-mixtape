@@ -3,16 +3,16 @@
 
   var logger = window.debug;
 
-  angular.module('<%= moduleName %>.filters')
+  angular.module('<%= moduleName %>.filters', [])
     .filter('<%= name %>', [
-        '$DEP',
-        function ($DEP) {
-          return function (){
-            
-          };
-        }
-      ]);
+      '$DEP',
+      function ($DEP) {
+        return function () {
+          
+        };
+      }
+    ]);
 
-    logger.debug('Registered filters.<%= name %>');
+  logger.debug('Registered <%= moduleName %>.filters');
 
 }());

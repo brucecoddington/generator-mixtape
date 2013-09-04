@@ -83,7 +83,7 @@ MixtapeGenerator.prototype.configGen = function configGen() {
 
   this.directory('config/cert', 'config/cert');
   this.directory('config/environments', 'config/environments');
-  this.directory('config/initializers', 'config/intitializers');
+  this.directory('config/initializers', 'config/initializers');
 
   cb();
 };

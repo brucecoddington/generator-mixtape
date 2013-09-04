@@ -2,7 +2,7 @@
   'use strict';
   var expect = chai.expect;
 
-  describe('<%= name %>.services', function () {
+  describe('<%= moduleName %>.services', function () {
 
     beforeEach (function () {
       browser().navigateTo("/");

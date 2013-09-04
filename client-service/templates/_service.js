@@ -1,17 +1,11 @@
 (function () {
   var logger = window.debug;
 
-  logger.info("Registering <%= _.capitalize(name) %>Service");
+  logger.info('Registering <%= moduleName %>.services');
 
-  angular.module('<%= name %>.services')
-    .factory('<%= _.capitalize(name) %>', [
-      '$DEPS',
-      function ($DEPS) {
+  angular.module('<%= moduleName %>.services')
+    .service('<%= name %>', {
 
-        return {
-
-        };
-      }
-    ]);
+    });
 
 }());

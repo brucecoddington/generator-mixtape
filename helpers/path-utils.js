@@ -1,8 +1,9 @@
 'use strict';
 var _ = require('lodash');
+_.str = require('underscore.string');
 
 var addTrailingSlash = function addTrailingSlash(path) {
-  if (!_.endsWith(path, '/')) {
+  if (!_.str.endsWith(path, '/')) {
     path += '/';
   }
   return path;
@@ -16,24 +17,24 @@ var pathAndName = function pathAndName(rootPath, name, suffix) {
   return [addTrailingSlash(rootPath), name, suffix].join('');
 };
 
-var directoryPath = function directoryPath(rootPath, directoryPath) {
-  return _.flatten([rootPath, directoryPath]).join('/');
+var directoryPath = function directoryPath(rootPath, dPath) {
+  return _.flatten([rootPath, dPath]).join('/');
 };
 
-var moduleDirectory = function moduleDirectory(directoryPath) {
-  return directoryPath('client/src', directoryPath);
+var moduleDirectory = function moduleDirectory(dPath) {
+  return directoryPath('client/src', dPath);
 };
 
-var scenarioDirectory = function scenarioDirectory(directoryPath) {
-  return directoryPath('client/test/e2e', directoryPath);
+var scenarioDirectory = function scenarioDirectory(dPath) {
+  return directoryPath('client/test/e2e', dPath);
 };
 
-var unitDirectory = function unitDirectory(directoryPath) {
-  return directoryPath('client/test/unit', directoryPath);
+var unitDirectory = function unitDirectory(dPath) {
+  return directoryPath('client/test/unit', dPath);
 };
 
-var templateDirectory = function templateDirectory(directoryPath) {
-  return directoryPath('client/assets/templates', directoryPath);
+var templateDirectory = function templateDirectory(dPath) {
+  return directoryPath('client/assets/templates', dPath);
 };
 
 var moduleFile = function moduleFile(directory, name) {

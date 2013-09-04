@@ -4,14 +4,14 @@
   var expect = chai.expect;
   var service, scope;
 
-  describe('services.<%= name %>', function () {
+  describe('<%= moduleName %>.services', function () {
 
-    beforeEach(module("<%= module %>"));
+    beforeEach(module("<%= moduleName %>"));
 
     beforeEach (function () {
       inject(function($rootScope, $service){
         scope = $rootScope.$new();
-        service = $service('<%= _.capitalize(name) %>Service', {
+        service = $service('<%= name %>', {
             $scope: scope
         }); 
       });
